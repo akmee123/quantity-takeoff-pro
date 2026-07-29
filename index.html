@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quantity Takeoff Pro · Sri Lankan Edition</title>
+    <title>Quantity Takeoff Pro · Professional QS Workspace</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <!-- Tesseract.js for free OCR -->
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <style>
         /* ----- DARK/LIGHT THEME (Apple‑inspired) ----- */
         :root {
@@ -685,7 +683,7 @@
     <div id="app-header" style="height:44px;background:var(--bg-secondary);border-bottom:1px solid var(--border-color);display:flex;align-items:center;padding:0 14px;gap:12px;flex-shrink:0;z-index:40;">
         <div style="display:flex;align-items:center;gap:10px;padding-right:14px;border-right:1px solid var(--border-color);min-width:170px;">
             <div style="width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,#2563eb,#1d4ed8);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;"><i class="fas fa-ruler-combined"></i></div>
-            <div style="line-height:1.15;"><strong style="font-size:13px;">QTO Pro</strong><br><span style="font-size:10px;color:var(--text-secondary);">Sri Lanka Edition</span></div>
+            <div style="line-height:1.15;"><strong style="font-size:13px;">QTO Pro</strong><br><span style="font-size:10px;color:var(--text-secondary);">Quantity Surveying</span></div>
         </div>
         <input id="projectNameInput" value="Untitled Project" style="border:none;background:transparent;font-size:14px;font-weight:600;padding:4px 8px;border-radius:6px;max-width:260px;color:var(--text-primary);outline:none;" />
         <span id="clientChip" style="font-size:11px;color:var(--text-secondary);background:var(--bg-hover);padding:3px 8px;border-radius:999px;">Client: —</span>
@@ -702,7 +700,7 @@
             <button id="btnOpen" title="Open Project"><i class="fas fa-folder-open"></i></button>
             <button id="btnUploadDrawing" class="primary" title="Import PDF / Image" style="background:#34c759;color:#fff;"><i class="fas fa-file-import"></i> Import</button>
             <button id="btnSave" title="Save Project"><i class="fas fa-save"></i></button>
-            <button id="btnExport" class="primary" title="Export BOQ Excel or Marked Drawing"><i class="fas fa-file-export"></i> Export ▾</button>
+            <button id="btnExport" class="primary" title="Export"><i class="fas fa-file-export"></i> Export</button>
         </div>
         <div class="group">
             <button id="toolSelect" class="tool-btn tool-active" data-tool="select" title="Select"><i class="fas fa-mouse-pointer"></i></button>
@@ -743,10 +741,11 @@
             <input type="range" id="bgOpacity" min="0" max="100" value="60" title="Underlay opacity" style="width:50px;" />
             <button id="btnBgToggle" title="Toggle underlay"><i class="fas fa-eye"></i></button>
             <button id="btnBgRemove" title="Remove underlay"><i class="fas fa-times"></i></button>
-            <button id="btnAiDetect" class="primary" title="AI Detect (Free)"><i class="fas fa-robot"></i> AI</button>
+            <button id="btnAiDetect" class="primary" title="AI Detect"><i class="fas fa-robot"></i> AI</button>
+            <button id="btnAiKey" title="API key"><i class="fas fa-key"></i></button>
         </div>
         <div class="group">
-            <button id="btnAiDetectStandalone" class="primary" title="AI Detect (Free)"><i class="fas fa-robot"></i> AI</button>
+            <button id="btnAiDetectStandalone" class="primary" title="AI Detect"><i class="fas fa-robot"></i> AI</button>
             <button id="btnMaterials" title="Materials"><i class="fas fa-cubes"></i></button>
             <button id="btnSettings" title="Settings"><i class="fas fa-cog"></i></button>
         </div>
@@ -789,10 +788,10 @@
     <!-- BOTTOM -->
     <div id="bottom-panel">
         <div class="panel-header">
-            <span><i class="fas fa-table"></i> Live Quantities · Gross · Deduction · Net · Rate · Amount</span>
+            <span><i class="fas fa-table"></i> Live Quantities · Gross · Deduction · Net</span>
         </div>
         <div id="table-wrap">
-            <table id="quantity-table"><thead><tr><th>Material</th><th>Element</th><th>Gross</th><th>Deduction</th><th>Net</th><th>Unit</th><th>Rate</th><th>Amount</th><th>Remarks</th></tr></thead><tbody id="table-body"></tbody></table>
+            <table id="quantity-table"><thead><tr><th>Material</th><th>Element</th><th>Gross</th><th>Deduction</th><th>Net</th><th>Unit</th><th>Remarks</th></tr></thead><tbody id="table-body"></tbody></table>
         </div>
     </div>
 
@@ -815,14 +814,6 @@
         <div class="item" data-action="sendBack"><i class="fas fa-arrow-down"></i> Send to Back</div>
         <div class="separator"></div>
         <div class="item" data-action="assignMat"><i class="fas fa-cube"></i> Assign Material</div>
-    </div>
-
-    <!-- EXPORT MENU -->
-    <div class="context-menu" id="exportMenu" style="min-width:220px;">
-        <div class="item" data-export="boq"><i class="fas fa-file-excel" style="color:#217346;"></i> BOQ Excel (.xlsx)</div>
-        <div class="item" data-export="drawing"><i class="fas fa-file-pdf" style="color:#dc2626;"></i> Marked Drawing PDF</div>
-        <div class="separator"></div>
-        <div class="item" data-export="png"><i class="fas fa-image" style="color:#2563eb;"></i> Marked Drawing PNG</div>
     </div>
 
     <!-- SETTINGS MODAL -->
@@ -880,7 +871,7 @@
                 <div style="display:flex;justify-content:space-between;gap:12px;"><span>2D / 3D</span><span style="background:var(--bg-hover);border:1px solid var(--border-color);padding:2px 7px;border-radius:4px;font-family:monospace;font-size:11px;">1 / 2</span></div>
                 <div style="display:flex;justify-content:space-between;gap:12px;"><span>Calibrate</span><span style="background:var(--bg-hover);border:1px solid var(--border-color);padding:2px 7px;border-radius:4px;font-family:monospace;font-size:11px;">C</span></div>
             </div>
-            <p style="font-size:12px;color:var(--text-secondary);line-height:1.5;"><strong>Workflow:</strong> Import drawing → Calibrate scale → Draw walls/slabs/columns → Add deductions → Review live quantities → Export <strong>BOQ Excel</strong> or <strong>Marked Drawing PDF</strong> for the client.</p>
+            <p style="font-size:12px;color:var(--text-secondary);line-height:1.5;"><strong>Workflow:</strong> Import drawing → Calibrate scale → Draw walls/slabs/columns → Add deductions → Review live quantities → Export BOQ.</p>
             <div class="actions"><button class="primary" id="helpModalOk">Got it</button></div>
         </div>
     </div>
@@ -891,8 +882,6 @@
 
     <!-- SheetJS for Excel BOQ export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <!-- jsPDF for marked drawing PDF export -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <!-- THREE.JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">
     </script>
@@ -904,16 +893,21 @@
 
     <script>
         // ================================================================
-        //  ADVANCED QUANTITY TAKEOFF PRO — SRI LANKAN EDITION
-        //  Features: Free AI Detection (Tesseract.js), Sri Lankan Rates,
-        //  3D Viewer, Cost Engine, Material Library, Layer Management,
-        //  Measurement Tool, Dark Mode, BOQ Export
+        //  ADVANCED QUANTITY TAKEOFF PRO
+        //  Features: 3D Viewer, Cost Engine, Material Library,
+        //  Layer Management, Measurement Tool, Dark Mode
+        //  + Line‑based Deduction Wall (yellow) continuous polyline
+        //  + Continuous wall/beam polyline drawing with live preview
+        //  + All elements fully editable (move, vertices, reshape)
+        //  + Smart snapping: hover highlights parent, click snaps to it
+        //  + Export as Excel BOQ
         // ================================================================
 
-        console.log('🚀 Starting Quantity Takeoff Pro (Sri Lanka Edition)...');
+        console.log('🚀 Starting Quantity Takeoff Pro...');
 
         // ----- CONSTANTS & DEFAULTS -----
         const DEFAULTS = {
+            // Matches Material Quantity Estimation formulas
             concrete: { mix: '1:2:4', dryFactor: 1.54, bagSize: 0.035, waste: 0.05, costPerM3: 120 },
             brick: { width: 0.225, height: 0.1125, depth: 0.075, joint: 0.01, waste: 0.05, costPerUnit: 0.45 },
             plaster: { mix: '1:5', dryFactor: 1.33, coats: 2, thickness: 0.015, waste: 0.05, costPerM2: 8.5 },
@@ -973,106 +967,6 @@
             return { litres, note: `${coats} coats · ${litres} L (coverage ${coverage} m²/L)` };
         }
 
-        // ----- SRI LANKAN MARKET RATES (LKR) -----
-        const sriLankanRates = {
-            // ----- CEMENT & CONCRETE -----
-            'Cement (50kg bag)': { unit: 'bag', rate: 1250, source: 'Colombo, Apr 2026' },
-            'Concrete C25 (1:2:4)': { unit: 'm³', rate: 28500, source: 'Ready-mix, Colombo' },
-            'Concrete C30 (1:1.5:3)': { unit: 'm³', rate: 32500, source: 'Ready-mix, Colombo' },
-            'Concrete C40': { unit: 'm³', rate: 38000, source: 'Ready-mix, Colombo' },
-            
-            // ----- STEEL & REBAR -----
-            'Steel Rebar (TMT)': { unit: 'kg', rate: 295, source: 'Colombo steel mills' },
-            'Steel Rebar (High Tensile)': { unit: 'kg', rate: 320, source: 'Colombo steel mills' },
-            'Steel Fabric (6mm)': { unit: 'm²', rate: 850, source: 'Colombo' },
-            'Steel Fabric (8mm)': { unit: 'm²', rate: 1200, source: 'Colombo' },
-            
-            // ----- BRICKS & BLOCKS -----
-            'Brick (standard, 225x112x75)': { unit: 'ea', rate: 45, source: 'Colombo brickworks' },
-            'Brick (face, 225x112x75)': { unit: 'ea', rate: 85, source: 'Colombo brickworks' },
-            'Cement Block (solid, 400x200x200)': { unit: 'ea', rate: 220, source: 'Colombo' },
-            'Cement Block (hollow, 400x200x200)': { unit: 'ea', rate: 180, source: 'Colombo' },
-            'AAC Block (600x200x100)': { unit: 'ea', rate: 350, source: 'Colombo' },
-            
-            // ----- SAND & AGGREGATES -----
-            'River Sand': { unit: 'm³', rate: 8500, source: 'Colombo, delivered' },
-            'M-Sand': { unit: 'm³', rate: 7500, source: 'Colombo' },
-            'Metal (20mm)': { unit: 'm³', rate: 9500, source: 'Colombo quarry' },
-            'Metal (12mm)': { unit: 'm³', rate: 8800, source: 'Colombo quarry' },
-            'Crusher Dust': { unit: 'm³', rate: 4200, source: 'Colombo' },
-            
-            // ----- TIMBER & PLYWOOD -----
-            'Timber (Kumbuk, sawn)': { unit: 'm³', rate: 145000, source: 'Colombo timber yards' },
-            'Timber (Nadun, sawn)': { unit: 'm³', rate: 120000, source: 'Colombo timber yards' },
-            'Timber (Teak, sawn)': { unit: 'm³', rate: 220000, source: 'Colombo timber yards' },
-            'Plywood (4mm)': { unit: 'sheet', rate: 2500, source: 'Colombo' },
-            'Plywood (6mm)': { unit: 'sheet', rate: 3200, source: 'Colombo' },
-            'Plywood (12mm)': { unit: 'sheet', rate: 4500, source: 'Colombo' },
-            
-            // ----- TILES & FLOORING -----
-            'Ceramic Tile (300x300)': { unit: 'm²', rate: 950, source: 'Colombo tiles' },
-            'Ceramic Tile (600x600)': { unit: 'm²', rate: 1500, source: 'Colombo tiles' },
-            'Vitrified Tile (600x600)': { unit: 'm²', rate: 2200, source: 'Colombo tiles' },
-            'Porcelain Tile (600x600)': { unit: 'm²', rate: 2800, source: 'Colombo tiles' },
-            'Marble Tile (600x600)': { unit: 'm²', rate: 6500, source: 'Colombo tiles' },
-            'Terrazzo Tile (300x300)': { unit: 'm²', rate: 1800, source: 'Colombo tiles' },
-            'Skirting Tile (100x600)': { unit: 'm', rate: 450, source: 'Colombo tiles' },
-            
-            // ----- PAINT & FINISHES -----
-            'Paint (Interior, emulsion)': { unit: 'L', rate: 850, source: 'Colombo paint shops' },
-            'Paint (Exterior, emulsion)': { unit: 'L', rate: 1200, source: 'Colombo paint shops' },
-            'Paint (Enamel, gloss)': { unit: 'L', rate: 950, source: 'Colombo paint shops' },
-            'Paint (Primer)': { unit: 'L', rate: 650, source: 'Colombo paint shops' },
-            'Varnish (wood)': { unit: 'L', rate: 1100, source: 'Colombo paint shops' },
-            'Wall Putty': { unit: 'kg', rate: 160, source: 'Colombo' },
-            
-            // ----- PLASTER & MORTAR -----
-            'Plaster (1:5)': { unit: 'm²', rate: 550, source: 'Colombo labour + materials' },
-            'Plaster (1:3)': { unit: 'm²', rate: 720, source: 'Colombo labour + materials' },
-            'Plaster (1:2)': { unit: 'm²', rate: 900, source: 'Colombo labour + materials' },
-            'Mortar (1:4)': { unit: 'm³', rate: 18500, source: 'Colombo' },
-            'Mortar (1:3)': { unit: 'm³', rate: 22000, source: 'Colombo' },
-            
-            // ----- ROOFING -----
-            'Clay Tiles (flat)': { unit: 'ea', rate: 95, source: 'Colombo roof supplies' },
-            'Clay Tiles (half-round)': { unit: 'ea', rate: 120, source: 'Colombo roof supplies' },
-            'Cement Tiles (flat)': { unit: 'ea', rate: 75, source: 'Colombo roof supplies' },
-            'Cement Tiles (half-round)': { unit: 'ea', rate: 95, source: 'Colombo roof supplies' },
-            'Roofing Sheets (GCI, 0.5mm)': { unit: 'm²', rate: 850, source: 'Colombo' },
-            'Roofing Sheets (GCI, 0.6mm)': { unit: 'm²', rate: 1050, source: 'Colombo' },
-            'Insulated Roof Panels': { unit: 'm²', rate: 3200, source: 'Colombo' },
-            
-            // ----- DOORS & WINDOWS -----
-            'Wooden Door (flush, 900x2100)': { unit: 'ea', rate: 18500, source: 'Colombo joinery' },
-            'Wooden Door (panel, 900x2100)': { unit: 'ea', rate: 28000, source: 'Colombo joinery' },
-            'Metal Door (900x2100)': { unit: 'ea', rate: 22000, source: 'Colombo' },
-            'UPVC Window (1200x1200)': { unit: 'ea', rate: 18500, source: 'Colombo' },
-            'Aluminum Window (1200x1200)': { unit: 'ea', rate: 16500, source: 'Colombo' },
-            'Wooden Window (1200x1200)': { unit: 'ea', rate: 21000, source: 'Colombo joinery' },
-            
-            // ----- LABOUR RATES -----
-            'Labour (Skilled, mason)': { unit: 'day', rate: 2500, source: 'Colombo daily rates' },
-            'Labour (Skilled, carpenter)': { unit: 'day', rate: 2800, source: 'Colombo daily rates' },
-            'Labour (Skilled, steel fixer)': { unit: 'day', rate: 2600, source: 'Colombo daily rates' },
-            'Labour (General)': { unit: 'day', rate: 1800, source: 'Colombo daily rates' },
-            'Labour (Painter)': { unit: 'day', rate: 2200, source: 'Colombo daily rates' },
-            'Labour (Tiler)': { unit: 'day', rate: 2400, source: 'Colombo daily rates' },
-            
-            // ----- MISC -----
-            'Waterproofing (membrane)': { unit: 'm²', rate: 950, source: 'Colombo' },
-            'Geotextile Fabric': { unit: 'm²', rate: 380, source: 'Colombo' },
-            'PVC Pipes (4")': { unit: 'm', rate: 550, source: 'Colombo' },
-            'PVC Pipes (2")': { unit: 'm', rate: 280, source: 'Colombo' },
-            'GI Pipes (4")': { unit: 'm', rate: 1200, source: 'Colombo' },
-            'GI Pipes (2")': { unit: 'm', rate: 750, source: 'Colombo' },
-            'Electrical Wire (1.5mm²)': { unit: 'm', rate: 65, source: 'Colombo' },
-            'Electrical Wire (2.5mm²)': { unit: 'm', rate: 95, source: 'Colombo' },
-            'Electrical Wire (4mm²)': { unit: 'm', rate: 150, source: 'Colombo' },
-            'Switch Board (standard)': { unit: 'ea', rate: 1850, source: 'Colombo' },
-            'Light Fitting (LED, basic)': { unit: 'ea', rate: 1200, source: 'Colombo' },
-            'Light Fitting (LED, decorative)': { unit: 'ea', rate: 2800, source: 'Colombo' },
-        };
-
         let materialLibrary = {
             'Concrete C25': { cost: 120, unit: 'm³', color: '#8a9aa8' },
             'Concrete C30': { cost: 140, unit: 'm³', color: '#7a8a98' },
@@ -1086,18 +980,6 @@
             'Steel Rebar': { cost: 850, unit: 'tonne', color: '#8a8a8a' },
             'Wood Timber': { cost: 450, unit: 'm³', color: '#c8a878' },
         };
-
-        // Merge Sri Lankan rates into material library (override with LKR)
-        Object.keys(sriLankanRates).forEach(name => {
-            const item = sriLankanRates[name];
-            materialLibrary[name] = {
-                cost: item.rate,
-                unit: item.unit,
-                color: '#e8d4b8',
-                lkr: true,
-                source: item.source,
-            };
-        });
 
         let projectOverrides = JSON.parse(JSON.stringify(DEFAULTS));
 
@@ -1143,6 +1025,7 @@
             const ho = document.getElementById('helpModalOk'); if (ho && hm) ho.addEventListener('click', function(){ hm.classList.remove('open'); });
         })();
 
+
         // ----- STATE -----
         let elements = [];
         let selectedIds = [];
@@ -1181,11 +1064,11 @@
 
         // Continuous polyline drawing for wall / beam / deduction_wall
         let deductionLinePoints = [];
-        let deductionParentId = null;
-        let hoveredParentId = null;
-        let continuousDrawPoints = [];
-        let continuousTempPreview = null;
-        let editingVertex = null;
+        let deductionParentId = null; // store the parent element id when first click snaps
+        let hoveredParentId = null; // for highlighting
+        let continuousDrawPoints = []; // shared continuous polyline points for wall/beam
+        let continuousTempPreview = null; // {x1,y1,x2,y2} live preview
+        let editingVertex = null; // { elId, vertexIndex, isEndpoint: 'p1'|'p2'|null } for reshape
 
         // Measurement state
         let measurePoints = [];
@@ -2175,8 +2058,36 @@
             }
         }
 
-        // ----- FREE AI DETECTION (No API key) -----
-        // Load Tesseract.js is loaded via CDN in <head>
+        // ----- AI DETECTION (unchanged) -----
+        const AI_KEY_STORAGE = 'qtoProAnthropicApiKey';
+
+        function getStoredApiKey() {
+            try { return localStorage.getItem(AI_KEY_STORAGE) || ''; } catch (e) { return ''; }
+        }
+
+        function promptForApiKey(force) {
+            const existing = getStoredApiKey();
+            if (existing && !force) return existing;
+            const input = prompt(
+                'Enter your Anthropic API key to enable AI detection.\n\n' +
+                'This is stored only in this browser (localStorage) and sent directly ' +
+                'from your browser to api.anthropic.com — never to any other server. ' +
+                'Get a key at console.anthropic.com.',
+                existing || ''
+            );
+            if (input === null) return existing || '';
+            const trimmed = input.trim();
+            try {
+                if (trimmed) localStorage.setItem(AI_KEY_STORAGE, trimmed);
+                else localStorage.removeItem(AI_KEY_STORAGE);
+            } catch (e) {}
+            return trimmed;
+        }
+
+        const AI_DETECT_TYPES = ['wall', 'column', 'slab', 'beam', 'door', 'window', 'deduction'];
+        const AI_DETECT_LAYER = { wall: 'Structural', column: 'Structural', slab: 'Structural',
+            beam: 'Structural', door: 'Architectural', window: 'Architectural', deduction: 'Architectural' };
+
         function setAiDetectBusy(busy, message) {
             const btn = document.getElementById('btnAiDetect');
             const loading = document.getElementById('loading');
@@ -2184,14 +2095,7 @@
                 btn.disabled = busy;
                 btn.innerHTML = busy ?
                     '<i class="fas fa-spinner fa-spin"></i> Detecting…' :
-                    '<i class="fas fa-robot"></i> AI';
-            }
-            const btn2 = document.getElementById('btnAiDetectStandalone');
-            if (btn2) {
-                btn2.disabled = busy;
-                btn2.innerHTML = busy ?
-                    '<i class="fas fa-spinner fa-spin"></i> Detecting…' :
-                    '<i class="fas fa-robot"></i> AI';
+                    '<i class="fas fa-robot"></i> AI Detect';
             }
             if (loading) {
                 if (busy) { loading.textContent = message || 'Running AI detection…';
@@ -2199,389 +2103,1037 @@
             }
         }
 
-        // Helper: load external script (if needed)
-        function loadScript(src) {
-            return new Promise((resolve, reject) => {
-                const script = document.createElement('script');
-                script.src = src;
-                script.onload = resolve;
-                script.onerror = reject;
-                document.head.appendChild(script);
-            });
-        }
+        async function aiDetectElements() {
+            if (isConfirmed) { alert('Unlock the takeoff (it is confirmed) before adding AI-detected elements.'); return; }
+            if (!backgroundImage) { alert('Upload a drawing first (PDF/PNG/JPG) — AI Detect reads the uploaded underlay.'); return; }
+            const apiKey = promptForApiKey(false);
+            if (!apiKey) return;
 
-        // ----- SHAPE DETECTION (edge + contour) -----
-        function detectShapes(imageData, w, h) {
-            const data = imageData.data;
-            const gray = new Uint8Array(w * h);
-            for (let i = 0; i < data.length; i += 4) {
-                gray[i / 4] = 0.299 * data[i] + 0.587 * data[i+1] + 0.114 * data[i+2];
-            }
-            
-            // Simple edge detection (Sobel-like)
-            const edges = new Uint8Array(w * h);
-            for (let y = 1; y < h - 1; y++) {
-                for (let x = 1; x < w - 1; x++) {
-                    const idx = y * w + x;
-                    const gx = gray[(y-1)*w + (x+1)] - gray[(y-1)*w + (x-1)] +
-                               2 * gray[y*w + (x+1)] - 2 * gray[y*w + (x-1)] +
-                               gray[(y+1)*w + (x+1)] - gray[(y+1)*w + (x-1)];
-                    const gy = gray[(y+1)*w + (x-1)] - gray[(y-1)*w + (x-1)] +
-                               2 * gray[(y+1)*w + x] - 2 * gray[(y-1)*w + x] +
-                               gray[(y+1)*w + (x+1)] - gray[(y-1)*w + (x+1)];
-                    edges[idx] = Math.sqrt(gx*gx + gy*gy) > 30 ? 255 : 0;
-                }
-            }
-            
-            // Find connected components (simple bounding boxes)
-            const visited = new Uint8Array(w * h);
-            const components = [];
-            
-            for (let y = 0; y < h; y++) {
-                for (let x = 0; x < w; x++) {
-                    const idx = y * w + x;
-                    if (edges[idx] > 0 && !visited[idx]) {
-                        const stack = [[x, y]];
-                        let minX = x, maxX = x, minY = y, maxY = y;
-                        let count = 0;
-                        visited[idx] = 1;
-                        
-                        while (stack.length > 0) {
-                            const [cx, cy] = stack.pop();
-                            const ci = cy * w + cx;
-                            minX = Math.min(minX, cx); maxX = Math.max(maxX, cx);
-                            minY = Math.min(minY, cy); maxY = Math.max(maxY, cy);
-                            count++;
-                            
-                            for (const [dx, dy] of [[-1,0],[1,0],[0,-1],[0,1]]) {
-                                const nx = cx + dx, ny = cy + dy;
-                                if (nx >= 0 && nx < w && ny >= 0 && ny < h) {
-                                    const ni = ny * w + nx;
-                                    if (edges[ni] > 0 && !visited[ni]) {
-                                        visited[ni] = 1;
-                                        stack.push([nx, ny]);
-                                    }
-                                }
-                            }
-                        }
-                        
-                        const area = (maxX - minX + 1) * (maxY - minY + 1);
-                        // Filter small noise and large background
-                        if (count > 50 && count < w * h * 0.5 && area > 100) {
-                            components.push({ x: minX, y: minY, w: maxX - minX + 1, h: maxY - minY + 1, area: count });
-                        }
-                    }
-                }
-            }
-            
-            // Classify components as walls, columns, slabs based on aspect ratio and size
-            const results = [];
-            const avgArea = components.reduce((s, c) => s + c.area, 0) / (components.length || 1);
-            
-            components.forEach(c => {
-                const aspect = c.w / c.h;
-                const isHorizontal = aspect > 2.5;
-                const isVertical = aspect < 0.4;
-                const isSquare = aspect >= 0.6 && aspect <= 1.6;
-                
-                let type = 'wall';
-                if (isSquare && c.area > avgArea * 1.5) type = 'column';
-                else if (isSquare && c.area > avgArea * 3) type = 'slab';
-                else if (isHorizontal || isVertical) type = 'wall';
-                else type = 'wall';
-                
-                // Apply a minimum size
-                if (c.w < 15 || c.h < 15) return;
-                
-                results.push({
-                    type: type,
-                    x: c.x,
-                    y: c.y,
-                    w: c.w,
-                    h: c.h,
-                    label: type.charAt(0).toUpperCase() + type.slice(1),
-                    confidence: Math.min(1, c.area / avgArea)
-                });
-            });
-            
-            // Merge overlapping components
-            return mergeOverlapping(results);
-        }
+            const commaIdx = backgroundImage.src.indexOf(',');
+            const base64Data = backgroundImage.src.slice(commaIdx + 1);
+            const mediaType = backgroundImage.src.slice(5, backgroundImage.src.indexOf(';')) || 'image/png';
+            const pixelW = backgroundImage.img.naturalWidth;
+            const pixelH = backgroundImage.img.naturalHeight;
+            const toWorldScale = backgroundImage.w / pixelW;
 
-        function mergeOverlapping(shapes) {
-            const merged = [];
-            const used = new Set();
-            
-            for (let i = 0; i < shapes.length; i++) {
-                if (used.has(i)) continue;
-                let a = shapes[i];
-                let mergedBox = { ...a };
-                
-                for (let j = i + 1; j < shapes.length; j++) {
-                    if (used.has(j)) continue;
-                    const b = shapes[j];
-                    const overlapX = Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x));
-                    const overlapY = Math.max(0, Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y));
-                    const overlap = overlapX * overlapY;
-                    const areaA = a.w * a.h;
-                    const areaB = b.w * b.h;
-                    
-                    if (overlap > Math.min(areaA, areaB) * 0.3) {
-                        used.add(j);
-                        mergedBox.x = Math.min(mergedBox.x, b.x);
-                        mergedBox.y = Math.min(mergedBox.y, b.y);
-                        mergedBox.w = Math.max(mergedBox.x + mergedBox.w, b.x + b.w) - mergedBox.x;
-                        mergedBox.h = Math.max(mergedBox.y + mergedBox.h, b.y + b.h) - mergedBox.y;
-                    }
-                }
-                used.add(i);
-                merged.push(mergedBox);
-            }
-            return merged;
-        }
+            const prompt_text =
+                'This image is an architectural/structural drawing, ' + pixelW + 'x' + pixelH +
+                ' pixels (origin top-left, x right, y down). Identify every wall, column, ' +
+                'beam, slab, door, window and opening/deduction you can see. ' +
+                'Respond with ONLY a JSON array (no prose, no markdown fences), each item: ' +
+                '{"type":"wall|column|slab|beam|door|window|deduction","x":number,"y":number,' +
+                '"w":number,"h":number,"label":string}. x,y,w,h are a bounding box in image ' +
+                'pixel coordinates. Use your best estimate from the drawing; it is fine to ' +
+                'approximate wall thickness. Return [] if nothing is identifiable.';
 
-        function parseDimensions(text, words) {
-            const dims = [];
-            const numberRegex = /\b\d{3,5}\b/g;
-            let match;
-            while ((match = numberRegex.exec(text)) !== null) {
-                const val = parseInt(match[0]);
-                if (val >= 300 && val <= 10000) {
-                    dims.push({ value: val, text: match[0], index: match.index });
-                }
-            }
-            return dims;
-        }
-
-        function combineShapesAndDimensions(shapes, dimensions, w, h) {
-            if (shapes.length > 0) return shapes;
-            const results = [];
-            const spacing = 50;
-            let x = 50, y = 50;
-            dimensions.forEach((d, i) => {
-                const dimW = d.value / 10;
-                results.push({
-                    type: 'wall',
-                    x: x,
-                    y: y + i * spacing,
-                    w: dimW,
-                    h: 15,
-                    label: `Wall ${i+1}`,
-                    confidence: 0.5
-                });
-                x += dimW + 50;
-                if (x > w - 100) { x = 50; y += 100; }
-            });
-            return results;
-        }
-
-        async function freeAIDetect() {
-            if (isConfirmed) { alert('Unlock the takeoff first.'); return; }
-            if (!backgroundImage || !backgroundImage.img) {
-                alert('Upload a drawing first (PDF/PNG/JPG).');
-                return;
-            }
-
-            setAiDetectBusy(true, 'Analyzing drawing for elements…');
-            
+            setAiDetectBusy(true, 'Sending drawing to Claude for element detection…');
             try {
-                const img = backgroundImage.img;
-                const canvas = document.createElement('canvas');
-                canvas.width = img.naturalWidth || img.width;
-                canvas.height = img.naturalHeight || img.height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0);
-                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-                // ---------- 1. SHAPE DETECTION ----------
-                const shapes = detectShapes(imageData, canvas.width, canvas.height);
-                
-                // ---------- 2. OCR TEXT EXTRACTION ----------
-                let text = '';
-                let words = [];
-                try {
-                    if (typeof Tesseract !== 'undefined') {
-                        const result = await Tesseract.recognize(
-                            canvas,
-                            'eng',
-                            { logger: m => m.status === 'recognizing text' && setAiDetectBusy(true, `OCR: ${Math.round(m.progress * 100)}%`) }
-                        );
-                        text = result.data.text || '';
-                        words = result.data.words || [];
+                const response = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': apiKey,
+                        'anthropic-version': '2023-06-01',
+                        'anthropic-dangerous-direct-browser-access': 'true',
+                    },
+                    body: JSON.stringify({
+                        model: 'claude-sonnet-4-6',
+                        max_tokens: 4096,
+                        messages: [{
+                            role: 'user',
+                            content: [
+                                { type: 'image', source: { type: 'base64', media_type: mediaType, data: base64Data } },
+                                { type: 'text', text: prompt_text },
+                            ],
+                        }],
+                    }),
+                });
+                if (!response.ok) {
+                    const errBody = await response.text();
+                    if (response.status === 401) {
+                        alert('That API key was rejected by Anthropic (401). Click the key icon to update it.');
                     } else {
-                        console.warn('Tesseract not loaded, skipping OCR');
+                        alert('AI request failed (' + response.status + '): ' + errBody.slice(0, 300));
                     }
-                } catch (ocrErr) {
-                    console.warn('OCR error:', ocrErr);
-                }
-                
-                // Parse dimensions from OCR
-                const dimensions = parseDimensions(text, words);
-                
-                // ---------- 3. COMBINE ----------
-                let detected = combineShapesAndDimensions(shapes, dimensions, canvas.width, canvas.height);
-                
-                if (detected.length === 0) {
-                    alert('No elements detected. Try a clearer drawing or use manual takeoff.');
-                    setAiDetectBusy(false);
                     return;
                 }
-                
+                const data = await response.json();
+                const textBlock = (data.content || []).find(b => b.type === 'text');
+                if (!textBlock) { alert('AI response had no readable content.'); return; }
+                let jsonText = textBlock.text.trim();
+                jsonText = jsonText.replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
+                let detected;
+                try { detected = JSON.parse(jsonText); } catch (e) {
+                    alert('Could not parse the AI response as JSON. Try again.');
+                    console.warn('AI raw response:', textBlock.text);
+                    return;
+                }
+                if (!Array.isArray(detected) || detected.length === 0) {
+                    alert('AI did not detect any recognizable elements in this drawing.');
+                    return;
+                }
+
                 saveState();
                 const newEls = [];
-                const toWorldScale = backgroundImage.w / canvas.width;
-                
                 detected.forEach(item => {
+                    const type = AI_DETECT_TYPES.includes(item.type) ? item.type : 'wall';
+                    if (typeof item.x !== 'number' || typeof item.y !== 'number' ||
+                        typeof item.w !== 'number' || typeof item.h !== 'number') return;
                     const el = createElement(
-                        item.type,
+                        type,
                         item.x * toWorldScale,
                         item.y * toWorldScale,
-                        Math.max(item.w * toWorldScale, 5),
-                        Math.max(item.h * toWorldScale, 5),
-                        { 
-                            ai: true, 
-                            layer: item.type === 'wall' ? 'Structural' : 
-                                   item.type === 'column' ? 'Structural' : 
-                                   item.type === 'slab' ? 'Structural' : 'Architectural',
-                            label: item.label || (item.type.charAt(0).toUpperCase() + item.type.slice(1) + ' ' + (newEls.length + 1)),
-                            zHeight: item.type === 'wall' ? 3.0 : 
-                                    item.type === 'column' ? 3.0 : 
-                                    item.type === 'slab' ? 0.15 : 2.1,
-                            thickness: item.type === 'wall' ? 0.15 : 
-                                       item.type === 'beam' ? 0.20 : 0.15,
-                        }
+                        Math.max(item.w * toWorldScale, 1),
+                        Math.max(item.h * toWorldScale, 1),
+                        { ai: true, layer: AI_DETECT_LAYER[type] || 'Structural',
+                            label: item.label || (type.charAt(0).toUpperCase() + type.slice(1)) }
                     );
-                    // If wall, make it a line element for proper length
-                    if (item.type === 'wall' || item.type === 'beam') {
-                        const p1 = { x: item.x * toWorldScale, y: (item.y + item.h/2) * toWorldScale };
-                        const p2 = { x: (item.x + item.w) * toWorldScale, y: (item.y + item.h/2) * toWorldScale };
-                        const lineEl = createLineElement(item.type, p1, p2, el.thickness);
-                        if (lineEl) {
-                            lineEl.ai = true;
-                            lineEl.label = el.label;
-                            lineEl.layer = el.layer;
-                            newEls.push(lineEl);
-                        }
-                    } else {
-                        newEls.push(el);
-                    }
+                    newEls.push(el);
                 });
-                
                 if (newEls.length === 0) {
-                    alert('Could not create elements from detected shapes.');
-                    setAiDetectBusy(false);
+                    alert('AI responded, but none of the detected shapes had usable coordinates.');
                     return;
                 }
-                
                 elements.push(...newEls);
                 selectedIds = newEls.map(el => el.id);
                 renderAll();
-                alert(`✅ AI detected ${newEls.length} element(s) from your drawing.\nReview and adjust them — free AI may miss details.`);
-                
+                alert('AI detected ' + newEls.length + ' element(s). Review and adjust them — AI takeoffs can miss or misjudge details, so double-check before confirming.');
             } catch (err) {
-                alert('AI detection failed: ' + err.message);
+                alert('AI detection failed: ' + err.message + '\n\nIf this is a CORS error, Anthropic may not allow direct-browser calls from this environment for your account/key type.');
             } finally {
                 setAiDetectBusy(false);
             }
         }
 
-        // ----- RENDER MARKET RATES PANEL (LKR) -----
-        function renderMarketRates() {
-            const container = document.getElementById('props-container');
-            // We'll prepend this to the existing content (inside the panel)
-            // But we must be careful not to break the properties display.
-            // We'll wrap in a div with id "marketRates" and replace each time.
-            let existing = document.getElementById('marketRates');
-            if (existing) existing.remove();
-
-            const div = document.createElement('div');
-            div.id = 'marketRates';
-            div.style.marginBottom = '12px';
-
-            const selectedEl = selectedIds.length === 1 ? elements.find(e => e.id === selectedIds[0]) : null;
-            
-            let html = `
-                <div style="background:var(--bg-secondary);border-radius:8px;padding:10px;border:1px solid var(--border-color);">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-                        <span style="font-weight:600;font-size:13px;">📊 Sri Lankan Market Rates</span>
-                        <span style="font-size:10px;color:var(--text-secondary);">LKR · Colombo</span>
-                    </div>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;font-size:11px;max-height:180px;overflow-y:auto;">
-            `;
-            
-            // Show first 20 rates
-            const topRates = Object.keys(sriLankanRates).slice(0, 20);
-            topRates.forEach(name => {
-                const item = sriLankanRates[name];
-                html += `
-                    <div style="display:flex;justify-content:space-between;padding:2px 2px;border-bottom:1px solid var(--border-color);">
-                        <span style="color:var(--text-secondary);font-size:10px;">${name}</span>
-                        <span style="font-weight:500;font-size:10px;">${item.rate.toLocaleString()} ${item.unit}</span>
-                    </div>
-                `;
-            });
-            html += `
-                    </div>
-                    <div style="font-size:9px;color:var(--text-secondary);margin-top:6px;">
-                        Source: ${Object.values(sriLankanRates)[0]?.source || 'Colombo markets'}
-                    </div>
-                </div>
-            `;
-            
-            // If an element is selected, show cost estimate
-            if (selectedEl) {
-                const metrics = getElementMetrics(selectedEl);
-                // Estimate using concrete C25 as default
-                const baseRate = sriLankanRates['Concrete C25']?.rate || 28500;
-                const costLKR = metrics.gross * baseRate * (selectedEl.zHeight || 0.15);
-                const labourPct = 0.35;
-                const matPct = 0.65;
-                
-                html += `
-                    <div style="background:var(--bg-secondary);border-radius:8px;padding:10px;border:1px solid var(--border-color);margin-top:8px;">
-                        <div style="font-weight:600;font-size:12px;margin-bottom:6px;">💰 Cost Estimate (LKR)</div>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 8px;font-size:12px;">
-                            <span>Gross quantity</span>
-                            <span style="text-align:right;">${metrics.gross.toFixed(2)} ${metrics.unit}</span>
-                            <span>Material cost (est.)</span>
-                            <span style="text-align:right;color:var(--success);">LKR ${(costLKR * matPct).toFixed(0)}</span>
-                            <span>Labour cost (est.)</span>
-                            <span style="text-align:right;color:var(--accent);">LKR ${(costLKR * labourPct).toFixed(0)}</span>
-                            <span style="font-weight:600;border-top:1px solid var(--border-color);padding-top:4px;">Total estimate</span>
-                            <span style="font-weight:700;text-align:right;border-top:1px solid var(--border-color);padding-top:4px;color:var(--success);">LKR ${costLKR.toFixed(0)}</span>
-                        </div>
-                        <div style="font-size:9px;color:var(--text-secondary);margin-top:6px;">
-                            * Based on average Colombo rates. Adjust for site conditions.
-                        </div>
-                    </div>
-                `;
-            }
-
-            div.innerHTML = html;
-            // Insert at top of props-container
-            const propsContainer = document.getElementById('props-container');
-            if (propsContainer) {
-                propsContainer.prepend(div);
-            }
+        function drawBackgroundImage(ctx) {
+            if (!backgroundImage || !backgroundImage.visible || !backgroundImage.img) return;
+            ctx.save();
+            ctx.globalAlpha = backgroundImage.opacity;
+            ctx.drawImage(backgroundImage.img, 0, 0, backgroundImage.w, backgroundImage.h);
+            ctx.restore();
         }
 
-        // ----- RENDER CANVAS (unchanged) -----
+        // ---- MAIN 2D RENDER ----
+        function renderCanvas2D() {
+            const canvas = document.getElementById('canvas2d');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = (rect.width || 1200) * dpr;
+            canvas.height = (rect.height || 800) * dpr;
+            canvas.style.width = (rect.width || 1200) + 'px';
+            canvas.style.height = (rect.height || 800) + 'px';
+            ctx.scale(dpr, dpr);
 
-        // We'll keep the rest of the original code except we replace AI detection.
-        // The original AI detection code (using Claude) is removed; we use freeAIDetect.
-        // Also remove the API key button.
+            const W = rect.width || 1200;
+            const H = rect.height || 800;
 
-        // The rest of the script is the same as original, with modifications to the toolbar setup.
+            ctx.clearRect(0, 0, W, H);
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--bg-primary').trim() || '#ffffff';
+            ctx.fillRect(0, 0, W, H);
 
-        // Since the file is extremely long, we continue with the rest of the original code.
-        // I will include only the parts that changed: the AI button handlers and the removal of Claude key.
+            ctx.save();
+            ctx.translate(viewport.offsetX, viewport.offsetY);
+            ctx.scale(viewport.scale, viewport.scale);
 
-        // In setupToolbar, we attach freeAIDetect to the AI buttons, and hide the key button.
+            drawBackgroundImage(ctx);
 
-        // ---- Include all original functions from here, but we must ensure we don't duplicate.
+            const { major, minor } = getGridSpacing(viewport.scale);
+            const visibleRect = {
+                x: -viewport.offsetX / viewport.scale,
+                y: -viewport.offsetY / viewport.scale,
+                w: W / viewport.scale,
+                h: H / viewport.scale,
+            };
 
-        // For brevity in this answer, I'll assume the rest of the original code is unchanged.
-        // However, to make the file complete, I will continue with the remainder of the script.
+            ctx.strokeStyle = '#e8e8ec';
+            ctx.lineWidth = 0.5 / viewport.scale;
+            const startX = Math.floor(visibleRect.x / minor) * minor;
+            const startY = Math.floor(visibleRect.y / minor) * minor;
+            const endX = visibleRect.x + visibleRect.w;
+            const endY = visibleRect.y + visibleRect.h;
+            for (let x = startX; x <= endX; x += minor) {
+                if (Math.abs(x % major) < 0.001) continue;
+                ctx.beginPath();
+                ctx.moveTo(x, visibleRect.y);
+                ctx.lineTo(x, visibleRect.y + visibleRect.w);
+                ctx.stroke();
+            }
+            for (let y = startY; y <= endY; y += minor) {
+                if (Math.abs(y % major) < 0.001) continue;
+                ctx.beginPath();
+                ctx.moveTo(visibleRect.x, y);
+                ctx.lineTo(visibleRect.x + visibleRect.w, y);
+                ctx.stroke();
+            }
+            ctx.strokeStyle = '#d0d0d8';
+            ctx.lineWidth = 0.8 / viewport.scale;
+            for (let x = startX; x <= endX; x += major) {
+                ctx.beginPath();
+                ctx.moveTo(x, visibleRect.y);
+                ctx.lineTo(x, visibleRect.y + visibleRect.w);
+                ctx.stroke();
+            }
+            for (let y = startY; y <= endY; y += major) {
+                ctx.beginPath();
+                ctx.moveTo(visibleRect.x, y);
+                ctx.lineTo(visibleRect.x + visibleRect.w, y);
+                ctx.stroke();
+            }
+
+            const layerFilter = currentLayer === 'All' ? null : currentLayer;
+            const visibleEls = elements.filter(el => !el.hidden && (layerFilter === null || el.layer === layerFilter));
+
+            // ---- Polygon preview (for slab/cutout) ----
+            if ((currentTool === 'slab' || currentTool === 'cutout' || currentTool === 'column') &&
+                polygonPoints.length > 0) {
+                drawPolygonPreview(ctx, polygonPoints, viewport.scale);
+            }
+
+            // ---- Continuous wall / beam polyline preview ----
+            if ((currentTool === 'wall' || currentTool === 'beam') && polygonPoints.length > 0) {
+                const color = currentTool === 'beam' ? '#b07ae0' : '#4a8fe0';
+                ctx.save();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 3 / viewport.scale;
+                ctx.setLineDash([]);
+                ctx.shadowColor = 'rgba(0,0,0,0.25)';
+                ctx.shadowBlur = 6 / viewport.scale;
+                if (polygonPoints.length >= 2) {
+                    ctx.beginPath();
+                    ctx.moveTo(polygonPoints[0].x, polygonPoints[0].y);
+                    for (let i = 1; i < polygonPoints.length; i++) {
+                        ctx.lineTo(polygonPoints[i].x, polygonPoints[i].y);
+                    }
+                    ctx.stroke();
+                }
+                // live segment to cursor
+                if (continuousTempPreview) {
+                    ctx.beginPath();
+                    ctx.moveTo(continuousTempPreview.x1, continuousTempPreview.y1);
+                    ctx.lineTo(continuousTempPreview.x2, continuousTempPreview.y2);
+                    ctx.setLineDash([8 / viewport.scale, 4 / viewport.scale]);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    const len = Math.hypot(continuousTempPreview.x2 - continuousTempPreview.x1,
+                        continuousTempPreview.y2 - continuousTempPreview.y1);
+                    const midX = (continuousTempPreview.x1 + continuousTempPreview.x2) / 2;
+                    const midY = (continuousTempPreview.y1 + continuousTempPreview.y2) / 2;
+                    ctx.fillStyle = color;
+                    ctx.font = `bold ${11 / viewport.scale}px sans-serif`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+                    ctx.fillText(toMeters(len).toFixed(2) + ' m', midX, midY - 6 / viewport.scale);
+                }
+                polygonPoints.forEach((p, idx) => {
+                    ctx.fillStyle = idx === 0 ? '#34c759' : color;
+                    ctx.strokeStyle = '#fff';
+                    ctx.lineWidth = 2 / viewport.scale;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 5 / viewport.scale, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.stroke();
+                });
+                ctx.restore();
+            }
+
+            // ---- Deduction continuous polyline preview (yellow) ----
+            if (currentTool === 'deduction_wall' && deductionLinePoints.length > 0) {
+                const color = '#FFD700';
+                ctx.save();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 4 / viewport.scale;
+                ctx.shadowColor = 'rgba(0,0,0,0.3)';
+                ctx.shadowBlur = 8 / viewport.scale;
+                if (deductionLinePoints.length >= 2) {
+                    ctx.beginPath();
+                    ctx.moveTo(deductionLinePoints[0].x, deductionLinePoints[0].y);
+                    for (let i = 1; i < deductionLinePoints.length; i++) {
+                        ctx.lineTo(deductionLinePoints[i].x, deductionLinePoints[i].y);
+                    }
+                    ctx.stroke();
+                }
+                if (continuousTempPreview) {
+                    ctx.beginPath();
+                    ctx.moveTo(continuousTempPreview.x1, continuousTempPreview.y1);
+                    ctx.lineTo(continuousTempPreview.x2, continuousTempPreview.y2);
+                    ctx.setLineDash([8 / viewport.scale, 4 / viewport.scale]);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    const len = Math.hypot(continuousTempPreview.x2 - continuousTempPreview.x1,
+                        continuousTempPreview.y2 - continuousTempPreview.y1);
+                    const midX = (continuousTempPreview.x1 + continuousTempPreview.x2) / 2;
+                    const midY = (continuousTempPreview.y1 + continuousTempPreview.y2) / 2;
+                    ctx.fillStyle = color;
+                    ctx.font = `bold ${11 / viewport.scale}px sans-serif`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+                    ctx.fillText(toMeters(len).toFixed(2) + ' m', midX, midY - 6 / viewport.scale);
+                }
+                deductionLinePoints.forEach((p, idx) => {
+                    ctx.fillStyle = color;
+                    ctx.strokeStyle = '#fff';
+                    ctx.lineWidth = 2 / viewport.scale;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 5 / viewport.scale, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.stroke();
+                });
+                ctx.restore();
+            }
+
+            // ---- Draw elements ----
+            visibleEls.forEach(el => {
+                const { x, y, w, h } = el;
+                ctx.save();
+                ctx.shadowColor = 'rgba(0,0,0,0.1)';
+                ctx.shadowBlur = 4 / viewport.scale;
+
+                // If element has vertices, draw as polygon (slab, floor, cutout)
+                if (el.vertices && el.vertices.length >= 3) {
+                    const pts = el.vertices.map(v => ({ x: el.x + v.x, y: el.y + v.y }));
+                    ctx.beginPath();
+                    ctx.moveTo(pts[0].x, pts[0].y);
+                    for (let i = 1; i < pts.length; i++) {
+                        ctx.lineTo(pts[i].x, pts[i].y);
+                    }
+                    ctx.closePath();
+                    // For cutout/deduction, fill with red transparent and draw cross
+                    if (el.isDeduction || el.type === 'cutout') {
+                        ctx.fillStyle = '#ff3b3040';
+                        ctx.strokeStyle = '#ff3b30';
+                        ctx.lineWidth = 2.5 / viewport.scale;
+                        ctx.setLineDash([]);
+                        ctx.fill();
+                        ctx.stroke();
+                        ctx.beginPath();
+                        ctx.moveTo(pts[0].x, pts[0].y);
+                        ctx.lineTo(pts[2] ? pts[2].x : pts[1].x, pts[2] ? pts[2].y : pts[1].y);
+                        ctx.moveTo(pts[1].x, pts[1].y);
+                        ctx.lineTo(pts[3] ? pts[3].x : pts[0].x, pts[3] ? pts[3].y : pts[0].y);
+                        ctx.stroke();
+                    } else {
+                        ctx.fillStyle = el.color + '60';
+                        ctx.strokeStyle = el.locked ? '#888' : el.color;
+                        ctx.lineWidth = el.ai ? 2 : 3;
+                        ctx.setLineDash(el.ai ? [] : [6, 4]);
+                        ctx.fill();
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+                    }
+                    // Show vertices
+                    pts.forEach((p) => {
+                        ctx.fillStyle = '#007aff';
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, 3 / viewport.scale, 0, 2 * Math.PI);
+                        ctx.fill();
+                    });
+                    if (selectedIds.includes(el.id)) {
+                        ctx.shadowBlur = 16 / viewport.scale;
+                        ctx.shadowColor = '#007aff';
+                        ctx.strokeStyle = '#007aff';
+                        ctx.lineWidth = 2;
+                        ctx.setLineDash([]);
+                        ctx.strokeRect(el.x - 2, el.y - 2, el.w + 4, el.h + 4);
+                        if (selectedIds.length === 1 && !el.locked) {
+                            const handles = [
+                                [el.x, el.y],
+                                [el.x + el.w / 2, el.y],
+                                [el.x + el.w, el.y],
+                                [el.x, el.y + el.h / 2],
+                                [el.x + el.w, el.y + el.h / 2],
+                                [el.x, el.y + el.h],
+                                [el.x + el.w / 2, el.y + el.h],
+                                [el.x + el.w, el.y + el.h]
+                            ];
+                            handles.forEach(([hx, hy]) => {
+                                ctx.fillStyle = '#007aff';
+                                ctx.shadowBlur = 0;
+                                ctx.beginPath();
+                                ctx.arc(hx, hy, 4 / viewport.scale, 0, 2 * Math.PI);
+                                ctx.fill();
+                            });
+                            pts.forEach((p) => {
+                                ctx.fillStyle = '#34c759';
+                                ctx.strokeStyle = '#fff';
+                                ctx.lineWidth = 1.5 / viewport.scale;
+                                ctx.beginPath();
+                                ctx.arc(p.x, p.y, 5 / viewport.scale, 0, 2 * Math.PI);
+                                ctx.fill();
+                                ctx.stroke();
+                            });
+                        }
+                    }
+                    ctx.restore();
+                    ctx.fillStyle = '#333';
+                    ctx.font = `${9/viewport.scale}px sans-serif`;
+                    ctx.fillText(el.label, el.x + 2, el.y + 12);
+                    ctx.fillStyle = '#666';
+                    ctx.font = `${8/viewport.scale}px sans-serif`;
+                    ctx.fillText(`z=${el.zHeight.toFixed(2)}m`, el.x + 2, el.y + 24);
+                    return;
+                }
+
+                // Angled wall / beam (2-point line with thickness)
+                if (el.isLine && el.p1 && el.p2 && (el.type === 'wall' || el.type === 'beam')) {
+                    const thkDraw = toDrawing(el.thickness || (el.type === 'beam' ? 0.20 : 0.15));
+                    const dx = el.p2.x - el.p1.x,
+                        dy = el.p2.y - el.p1.y;
+                    const len = Math.sqrt(dx * dx + dy * dy) || 1;
+                    const angle = el.angle != null ? el.angle : Math.atan2(dy, dx);
+                    const midX = (el.p1.x + el.p2.x) / 2;
+                    const midY = (el.p1.y + el.p2.y) / 2;
+                    ctx.save();
+                    ctx.translate(midX, midY);
+                    ctx.rotate(angle);
+                    ctx.fillStyle = el.color + '60';
+                    ctx.strokeStyle = el.locked ? '#888' : el.color;
+                    ctx.lineWidth = (el.ai ? 2 : 2.5) / viewport.scale;
+                    ctx.setLineDash(el.ai ? [] : [6 / viewport.scale, 4 / viewport.scale]);
+                    ctx.fillRect(-len / 2, -thkDraw / 2, len, thkDraw);
+                    ctx.strokeRect(-len / 2, -thkDraw / 2, len, thkDraw);
+                    ctx.setLineDash([]);
+                    ctx.beginPath();
+                    ctx.arc(-len / 2, 0, Math.max(thkDraw / 2, 1 / viewport.scale), 0, Math.PI * 2);
+                    ctx.arc(len / 2, 0, Math.max(thkDraw / 2, 1 / viewport.scale), 0, Math.PI * 2);
+                    ctx.fillStyle = el.color + '90';
+                    ctx.fill();
+                    if (selectedIds.includes(el.id)) {
+                        ctx.strokeStyle = '#007aff';
+                        ctx.lineWidth = 2.5 / viewport.scale;
+                        ctx.strokeRect(-len / 2 - 2 / viewport.scale, -thkDraw / 2 - 2 / viewport.scale,
+                            len + 4 / viewport.scale, thkDraw + 4 / viewport.scale);
+                        if (selectedIds.length === 1 && !el.locked) {
+                            ctx.fillStyle = '#007aff';
+                            ctx.beginPath();
+                            ctx.arc(-len / 2, 0, 5 / viewport.scale, 0, Math.PI * 2);
+                            ctx.fill();
+                            ctx.beginPath();
+                            ctx.arc(len / 2, 0, 5 / viewport.scale, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                    }
+                    // Highlight if hovered parent
+                    if (hoveredParentId === el.id && (currentTool === 'deduction_wall')) {
+                        ctx.setLineDash([8 / viewport.scale, 4 / viewport.scale]);
+                        ctx.strokeStyle = '#ffaa00';
+                        ctx.lineWidth = 4 / viewport.scale;
+                        ctx.strokeRect(-len / 2 - 4 / viewport.scale, -thkDraw / 2 - 4 / viewport.scale,
+                            len + 8 / viewport.scale, thkDraw + 8 / viewport.scale);
+                        ctx.setLineDash([]);
+                    }
+                    ctx.restore();
+                    ctx.fillStyle = '#333';
+                    ctx.font = `${9 / viewport.scale}px sans-serif`;
+                    ctx.fillText(el.label, midX + 2, midY - thkDraw / 2 - 4 / viewport.scale);
+                    ctx.fillStyle = '#666';
+                    ctx.font = `${8 / viewport.scale}px sans-serif`;
+                    const lenM = toMeters(len);
+                    ctx.fillText(`${lenM.toFixed(2)} m · z=${(el.zHeight || 0).toFixed(2)}m`, midX + 2, midY - thkDraw / 2 + 10 / viewport.scale);
+                    ctx.restore();
+                    return;
+                }
+
+                // Standard rect elements (door, window, column, etc.)
+                if (el.type === 'door') {
+                    drawDoor(ctx, el, viewport.scale);
+                } else if (el.type === 'window') {
+                    drawWindow(ctx, el, viewport.scale);
+                } else if (el.isDeduction || el.type === 'cutout') {
+                    // draw as red cross with semi-transparent fill
+                    ctx.fillStyle = '#ff3b3040';
+                    ctx.strokeStyle = '#ff3b30';
+                    ctx.lineWidth = 2.5 / viewport.scale;
+                    ctx.setLineDash([]);
+                    ctx.fillRect(x, y, w, h);
+                    ctx.strokeRect(x, y, w, h);
+                    ctx.beginPath();
+                    ctx.moveTo(x, y);
+                    ctx.lineTo(x + w, y + h);
+                    ctx.moveTo(x + w, y);
+                    ctx.lineTo(x, y + h);
+                    ctx.stroke();
+                } else {
+                    ctx.fillStyle = el.color + '60';
+                    ctx.strokeStyle = el.locked ? '#888' : el.color;
+                    ctx.lineWidth = el.ai ? 2 : 3;
+                    ctx.setLineDash(el.ai ? [] : [6, 4]);
+                    ctx.fillRect(x, y, w, h);
+                    ctx.strokeRect(x, y, w, h);
+                }
+
+                if (selectedIds.includes(el.id) && !el.vertices) {
+                    ctx.shadowBlur = 16 / viewport.scale;
+                    ctx.shadowColor = '#007aff';
+                    ctx.strokeStyle = '#007aff';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([]);
+                    ctx.strokeRect(x - 2, y - 2, w + 4, h + 4);
+                    if (selectedIds.length === 1 && !el.locked) {
+                        const handles = [
+                            [x, y, 'nw'],
+                            [x + w / 2, y, 'n'],
+                            [x + w, y, 'ne'],
+                            [x, y + h / 2, 'w'],
+                            [x + w, y + h / 2, 'e'],
+                            [x, y + h, 'sw'],
+                            [x + w / 2, y + h, 's'],
+                            [x + w, y + h, 'se']
+                        ];
+                        handles.forEach(([hx, hy]) => {
+                            ctx.fillStyle = '#007aff';
+                            ctx.shadowBlur = 0;
+                            ctx.beginPath();
+                            ctx.arc(hx, hy, 4, 0, 2 * Math.PI);
+                            ctx.fill();
+                        });
+                    }
+                }
+                ctx.restore();
+                ctx.fillStyle = '#333';
+                ctx.font = `${9/viewport.scale}px sans-serif`;
+                ctx.fillText(el.label, x + 2, y + 12);
+                ctx.fillStyle = '#666';
+                ctx.font = `${8/viewport.scale}px sans-serif`;
+                ctx.fillText(`z=${el.zHeight.toFixed(2)}m`, x + 2, y + 24);
+                if (el.layer && el.layer !== 'All') {
+                    ctx.fillStyle = '#888';
+                    ctx.font = `${7/viewport.scale}px sans-serif`;
+                    ctx.fillText(`📁${el.layer}`, x + 2, y + 36);
+                }
+            });
+
+            // ---- Measure points ----
+            if (measurePoints.length > 0) {
+                ctx.save();
+                measurePoints.forEach((p, i) => {
+                    ctx.fillStyle = i === 0 ? '#007aff' : '#ff3b30';
+                    ctx.shadowColor = 'rgba(0,0,0,0.3)';
+                    ctx.shadowBlur = 6 / viewport.scale;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 5, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                });
+                if (measurePoints.length === 2) {
+                    const p1 = measurePoints[0],
+                        p2 = measurePoints[1];
+                    const dist = toMeters(Math.sqrt((p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2));
+                    ctx.strokeStyle = '#007aff';
+                    ctx.lineWidth = 2 / viewport.scale;
+                    ctx.setLineDash([6 / viewport.scale, 4 / viewport.scale]);
+                    ctx.beginPath();
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    const midX = (p1.x + p2.x) / 2,
+                        midY = (p1.y + p2.y) / 2;
+                    ctx.fillStyle = '#007aff';
+                    ctx.font = `bold ${12/viewport.scale}px sans-serif`;
+                    ctx.textAlign = 'center';
+                    ctx.fillText(dist.toFixed(2) + ' m', midX, midY - 10 / viewport.scale);
+                }
+                ctx.restore();
+            }
+
+            // ---- Calibration points ----
+            if (calibratePoints.length > 0 || (currentTool === 'calibrate' && calibratePreview)) {
+                ctx.save();
+                calibratePoints.forEach((p, i) => {
+                    ctx.fillStyle = i === 0 ? '#ff9f0a' : '#34c759';
+                    ctx.strokeStyle = '#fff';
+                    ctx.lineWidth = 2 / viewport.scale;
+                    ctx.shadowColor = 'rgba(0,0,0,0.4)';
+                    ctx.shadowBlur = 8 / viewport.scale;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 7, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                    ctx.stroke();
+                    ctx.fillStyle = '#fff';
+                    ctx.font = `bold ${11 / viewport.scale}px sans-serif`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(String(i + 1), p.x, p.y);
+                });
+
+                const p1 = calibratePoints[0];
+                const p2 = calibratePoints.length >= 2 ?
+                    calibratePoints[1] :
+                    (calibratePreview || null);
+
+                if (p1 && p2) {
+                    const drawingDist = Math.sqrt((p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2);
+                    ctx.strokeStyle = 'rgba(255, 159, 10, 0.35)';
+                    ctx.lineWidth = 6 / viewport.scale;
+                    ctx.setLineDash([]);
+                    ctx.beginPath();
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.stroke();
+                    ctx.strokeStyle = '#ff9f0a';
+                    ctx.lineWidth = 2.5 / viewport.scale;
+                    ctx.setLineDash([8 / viewport.scale, 5 / viewport.scale]);
+                    ctx.beginPath();
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    const midX = (p1.x + p2.x) / 2;
+                    const midY = (p1.y + p2.y) / 2;
+                    const label = drawingDist.toFixed(2) + ' units';
+                    ctx.font = `bold ${13 / viewport.scale}px sans-serif`;
+                    const tw = ctx.measureText(label).width;
+                    const pad = 6 / viewport.scale;
+                    const bh = 18 / viewport.scale;
+                    ctx.fillStyle = 'rgba(255, 159, 10, 0.92)';
+                    ctx.strokeStyle = '#fff';
+                    ctx.lineWidth = 1.5 / viewport.scale;
+                    const lx = midX - tw / 2 - pad;
+                    const ly = midY - bh - 8 / viewport.scale;
+                    ctx.beginPath();
+                    ctx.roundRect(lx, ly, tw + pad * 2, bh, 4 / viewport.scale);
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.fillStyle = '#fff';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(label, midX, ly + bh / 2);
+
+                    if (calibratePoints.length === 1 && calibratePreview) {
+                        ctx.fillStyle = '#34c759';
+                        ctx.strokeStyle = '#fff';
+                        ctx.lineWidth = 2 / viewport.scale;
+                        ctx.beginPath();
+                        ctx.arc(p2.x, p2.y, 7, 0, 2 * Math.PI);
+                        ctx.fill();
+                        ctx.stroke();
+                        ctx.fillStyle = '#fff';
+                        ctx.font = `bold ${11 / viewport.scale}px sans-serif`;
+                        ctx.fillText('2', p2.x, p2.y);
+                    }
+                }
+                ctx.restore();
+            }
+
+            ctx.restore();
+
+            // ---- Scale bar ----
+            ctx.save();
+            const barX = 20,
+                barY = H - 40;
+            const targetPixels = 100;
+            const worldLen = targetPixels / viewport.scale;
+            const realLen = toMeters(worldLen);
+            const roundValues = [0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500];
+            let displayMeters = roundValues.find(v => v >= realLen) || 100;
+            let barWidth = toDrawing(displayMeters) * viewport.scale;
+            while (barWidth > 300 && displayMeters > 0.1) { displayMeters /= 2;
+                barWidth = toDrawing(displayMeters) * viewport.scale; }
+            while (barWidth < 30 && displayMeters < 1000) { displayMeters *= 2;
+                barWidth = toDrawing(displayMeters) * viewport.scale; }
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.fillStyle = '#333';
+            ctx.font = '12px sans-serif';
+            ctx.beginPath();
+            ctx.moveTo(barX, barY);
+            ctx.lineTo(barX + barWidth, barY);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(barX, barY - 5);
+            ctx.lineTo(barX, barY + 5);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(barX + barWidth, barY - 5);
+            ctx.lineTo(barX + barWidth, barY + 5);
+            ctx.stroke();
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            const label = displayMeters >= 1 ? displayMeters + ' m' : displayMeters.toFixed(1) + ' m';
+            ctx.fillText(label, barX + barWidth / 2, barY + 6);
+            ctx.restore();
+
+            document.getElementById('zoomDisplay').textContent = Math.round(viewport.scale * 100) + '%';
+            document.getElementById('loading').classList.add('hidden');
+        }
+
+        // ----- 3D RENDERER (unchanged) -----
+        let threeGrid = null;
+        let threeGround = null;
+        let threeFitDone = false;
+
+        function initThree() {
+            if (threeInitialized) return;
+            const container = document.getElementById('threeContainer');
+            if (!container) return;
+            const W = container.clientWidth || 600;
+            const H = container.clientHeight || 400;
+            scene = new THREE.Scene();
+            const bg = currentTheme === 'dark' ? 0x1c1c1e : 0xf0f0f2;
+            scene.background = new THREE.Color(bg);
+            camera = new THREE.PerspectiveCamera(45, W / H, 0.05, 5000);
+            camera.position.set(15, 12, 20);
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(W, H);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            container.appendChild(renderer.domElement);
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.target.set(0, 0, 0);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.1;
+            controls.update();
+            const ambient = new THREE.AmbientLight(0x404060, 0.55);
+            scene.add(ambient);
+            const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
+            dirLight.position.set(30, 50, 20);
+            dirLight.castShadow = true;
+            dirLight.shadow.mapSize.width = 2048;
+            dirLight.shadow.mapSize.height = 2048;
+            dirLight.shadow.camera.near = 0.5;
+            dirLight.shadow.camera.far = 200;
+            dirLight.shadow.camera.left = -50;
+            dirLight.shadow.camera.right = 50;
+            dirLight.shadow.camera.top = 50;
+            dirLight.shadow.camera.bottom = -50;
+            scene.add(dirLight);
+            const fillLight = new THREE.DirectionalLight(0x8888ff, 0.35);
+            fillLight.position.set(-20, 20, -30);
+            scene.add(fillLight);
+            const hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 0.55);
+            scene.add(hemi);
+            threeInitialized = true;
+            threeFitDone = false;
+            buildThreeScene();
+            animateThree();
+        }
+
+        function du(v) { return v * (calibrationFactor || 1); }
+
+        function rebuildThreeGrid(minX, maxX, minZ, maxZ) {
+            if (threeGrid) { scene.remove(threeGrid);
+                threeGrid = null; }
+            if (threeGround) { scene.remove(threeGround);
+                threeGround = null; }
+            const pad = 5;
+            const sizeX = Math.max(10, (maxX - minX) + pad * 2);
+            const sizeZ = Math.max(10, (maxZ - minZ) + pad * 2);
+            const size = Math.max(sizeX, sizeZ);
+            const cx = (minX + maxX) / 2;
+            const cz = (minZ + maxZ) / 2;
+            const divisions = Math.max(10, Math.min(100, Math.round(size)));
+            threeGrid = new THREE.GridHelper(size, divisions, 0x888888, 0xcccccc);
+            threeGrid.position.set(cx, -0.02, cz);
+            scene.add(threeGrid);
+            const groundGeo = new THREE.PlaneGeometry(size, size);
+            const groundMat = new THREE.ShadowMaterial({ opacity: 0.25 });
+            threeGround = new THREE.Mesh(groundGeo, groundMat);
+            threeGround.rotation.x = -Math.PI / 2;
+            threeGround.position.set(cx, -0.02, cz);
+            threeGround.receiveShadow = true;
+            scene.add(threeGround);
+        }
+
+        function fitThreeCamera(minX, maxX, minY, maxY, minZ, maxZ) {
+            const sizeX = Math.max(1, maxX - minX);
+            const sizeY = Math.max(1, maxY - minY);
+            const sizeZ = Math.max(1, maxZ - minZ);
+            const maxDim = Math.max(sizeX, sizeY, sizeZ);
+            const cx = (minX + maxX) / 2;
+            const cy = (minY + maxY) / 2;
+            const cz = (minZ + maxZ) / 2;
+            const dist = maxDim * 1.6 + 2;
+            camera.position.set(cx + dist * 0.7, cy + dist * 0.55, cz + dist * 0.7);
+            camera.near = Math.max(0.05, maxDim / 500);
+            camera.far = Math.max(500, maxDim * 20);
+            camera.updateProjectionMatrix();
+            controls.target.set(cx, cy * 0.4, cz);
+            controls.update();
+            scene.traverse(obj => {
+                if (obj.isDirectionalLight && obj.castShadow) {
+                    const s = maxDim * 0.8 + 10;
+                    obj.shadow.camera.left = -s;
+                    obj.shadow.camera.right = s;
+                    obj.shadow.camera.top = s;
+                    obj.shadow.camera.bottom = -s;
+                    obj.shadow.camera.far = maxDim * 5 + 50;
+                    obj.shadow.camera.updateProjectionMatrix();
+                    obj.position.set(cx + s * 0.6, cy + s, cz + s * 0.4);
+                }
+            });
+        }
+
+        function buildThreeScene() {
+            if (!threeInitialized) return;
+            threeObjects.forEach(obj => scene.remove(obj));
+            threeObjects = [];
+            const visibleEls = elements.filter(el => !el.hidden);
+            const s = calibrationFactor || 1;
+            let minX = Infinity,
+                maxX = -Infinity,
+                minZ = Infinity,
+                maxZ = -Infinity,
+                maxH = 3;
+            visibleEls.forEach(el => {
+                const color = new THREE.Color(el.color);
+                let wM = Math.max(0.05, du(el.w || 10));
+                let dM = Math.max(0.05, du(el.h || 10));
+                let hM = el.zHeight || 0.5;
+                let wallAngle = 0;
+                if (el.type === 'wall') {
+                    const thick = el.thickness || 0.15;
+                    hM = Math.max(0.5, el.zHeight || 3.0);
+                    if (el.isLine && el.length != null) {
+                        wM = Math.max(0.05, du(el.length));
+                        dM = Math.max(0.05, thick);
+                        wallAngle = el.angle || 0;
+                    } else if (el.w >= el.h) {
+                        dM = Math.max(0.05, thick);
+                        wM = Math.max(0.05, du(el.w));
+                    } else {
+                        wM = Math.max(0.05, thick);
+                        dM = Math.max(0.05, du(el.h));
+                    }
+                }
+                if (el.type === 'column') { hM = Math.max(0.5, el.zHeight || 3.0); }
+                if (el.type === 'beam') {
+                    hM = Math.max(0.15, el.zHeight || 0.3);
+                    const thick = el.thickness || 0.2;
+                    if (el.isLine && el.length != null) {
+                        wM = Math.max(0.05, du(el.length));
+                        dM = Math.max(0.05, thick);
+                        wallAngle = el.angle || 0;
+                    } else if (el.w >= el.h) {
+                        dM = Math.max(0.05, thick);
+                    } else {
+                        wM = Math.max(0.05, thick);
+                    }
+                }
+                if (el.type === 'slab') { hM = Math.max(0.05, el.zHeight || 0.15); }
+                const isDed = el.isDeduction || el.type === 'cutout';
+                let cx, cz;
+                if (el.isLine && el.p1 && el.p2) {
+                    cx = du((el.p1.x + el.p2.x) / 2);
+                    cz = du((el.p1.y + el.p2.y) / 2);
+                } else {
+                    cx = du(el.x + (el.w || 10) / 2);
+                    cz = du(el.y + (el.h || 10) / 2);
+                }
+                if (isDed) {
+                    hM = Math.max(0.3, el.zHeight || 2.1);
+                    const openWM = Math.max(0.15, wM);
+                    const openDM = Math.max(0.15, dM);
+                    const hostWall = elements.find(w =>
+                        w.type === 'wall' && !w.hidden &&
+                        el.x < w.x + w.w && el.x + el.w > w.x &&
+                        el.y < w.y + w.h && el.y + el.h > w.y
+                    );
+                    let boxW = openWM,
+                        boxD = openDM;
+                    if (hostWall) {
+                        const thick = hostWall.thickness || 0.15;
+                        if (hostWall.w >= hostWall.h) { boxD = Math.max(thick + 0.08, 0.2);
+                            boxW = openWM; } else { boxW = Math.max(thick + 0.08, 0.2);
+                            boxD = openDM; }
+                    }
+                    const geo = new THREE.BoxGeometry(boxW, hM, boxD);
+                    const mat = new THREE.MeshStandardMaterial({
+                        color: new THREE.Color(el.color || '#ff3b30'),
+                        transparent: true,
+                        opacity: 0.55,
+                        roughness: 0.35,
+                        metalness: 0.05,
+                        emissive: new THREE.Color(el.color || '#ff3b30'),
+                        emissiveIntensity: selectedIds.includes(el.id) ? 0.55 : 0.25,
+                        depthWrite: false,
+                        side: THREE.DoubleSide,
+                    });
+                    const mesh = new THREE.Mesh(geo, mat);
+                    const baseY = hM / 2;
+                    mesh.position.set(cx, baseY, cz);
+                    mesh.userData.elementId = el.id;
+                    mesh.renderOrder = 2;
+                    scene.add(mesh);
+                    threeObjects.push(mesh);
+                    const edges = new THREE.EdgesGeometry(geo);
+                    const lineMat = new THREE.LineBasicMaterial({ color: 0xff1a1a, linewidth: 2 });
+                    const line = new THREE.LineSegments(edges, lineMat);
+                    line.position.copy(mesh.position);
+                    line.renderOrder = 3;
+                    scene.add(line);
+                    threeObjects.push(line);
+                    const crossMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true,
+                        opacity: 0.9 });
+                    const crossPts1 = [
+                        new THREE.Vector3(-boxW / 2, -hM / 2, 0),
+                        new THREE.Vector3(boxW / 2, hM / 2, 0),
+                    ];
+                    const crossPts2 = [
+                        new THREE.Vector3(boxW / 2, -hM / 2, 0),
+                        new THREE.Vector3(-boxW / 2, hM / 2, 0),
+                    ];
+                    const cross1 = new THREE.Line(new THREE.BufferGeometry().setFromPoints(crossPts1), crossMat);
+                    const cross2 = new THREE.Line(new THREE.BufferGeometry().setFromPoints(crossPts2), crossMat);
+                    cross1.position.copy(mesh.position);
+                    cross2.position.copy(mesh.position);
+                    if (hostWall && hostWall.w < hostWall.h) {
+                        cross1.rotation.y = Math.PI / 2;
+                        cross2.rotation.y = Math.PI / 2;
+                    }
+                    cross1.renderOrder = 4;
+                    cross2.renderOrder = 4;
+                    scene.add(cross1);
+                    scene.add(cross2);
+                    threeObjects.push(cross1, cross2);
+                    const labelCanvas = document.createElement('canvas');
+                    labelCanvas.width = 256;
+                    labelCanvas.height = 80;
+                    const lctx = labelCanvas.getContext('2d');
+                    lctx.fillStyle = 'rgba(255, 59, 48, 0.95)';
+                    lctx.beginPath();
+                    lctx.roundRect(0, 0, 256, 80, 12);
+                    lctx.fill();
+                    lctx.strokeStyle = '#fff';
+                    lctx.lineWidth = 4;
+                    lctx.stroke();
+                    lctx.fillStyle = '#fff';
+                    lctx.font = 'bold 28px sans-serif';
+                    lctx.textAlign = 'center';
+                    lctx.textBaseline = 'middle';
+                    lctx.fillText('DEDUCT', 128, 28);
+                    lctx.font = '18px sans-serif';
+                    lctx.fillText(el.label, 128, 58);
+                    const texture = new THREE.CanvasTexture(labelCanvas);
+                    const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true,
+                    depthTest: false });
+                    const sprite = new THREE.Sprite(spriteMat);
+                    sprite.position.set(cx, hM + 0.5, cz);
+                    sprite.scale.set(2.2, 0.7, 1);
+                    sprite.renderOrder = 5;
+                    scene.add(sprite);
+                    threeObjects.push(sprite);
+                    minX = Math.min(minX, cx - boxW / 2);
+                    maxX = Math.max(maxX, cx + boxW / 2);
+                    minZ = Math.min(minZ, cz - boxD / 2);
+                    maxZ = Math.max(maxZ, cz + boxD / 2);
+                    maxH = Math.max(maxH, hM + 0.5);
+                    return;
+                }
+                const geo = new THREE.BoxGeometry(wM, hM, dM);
+                const mat = new THREE.MeshStandardMaterial({
+                    color: color,
+                    transparent: true,
+                    opacity: el.locked ? 0.6 : 0.88,
+                    roughness: 0.45,
+                    metalness: 0.08,
+                    emissive: selectedIds.includes(el.id) ? new THREE.Color(0x007aff) : new THREE.Color(
+                    0x000000),
+                    emissiveIntensity: selectedIds.includes(el.id) ? 0.35 : 0,
+                });
+                const mesh = new THREE.Mesh(geo, mat);
+                let baseY = hM / 2;
+                if (el.type === 'beam') { baseY = 2.7 + hM / 2; }
+                mesh.position.set(cx, baseY, cz);
+                if (el.isLine && wallAngle) {
+                    mesh.rotation.y = -wallAngle;
+                }
+                mesh.castShadow = true;
+                mesh.receiveShadow = true;
+                mesh.userData.elementId = el.id;
+                scene.add(mesh);
+                threeObjects.push(mesh);
+                const edges = new THREE.EdgesGeometry(geo);
+                const lineMat = new THREE.LineBasicMaterial({
+                    color: 0x222222,
+                    transparent: true,
+                    opacity: 0.25
+                });
+                const line = new THREE.LineSegments(edges, lineMat);
+                line.position.copy(mesh.position);
+                line.rotation.copy(mesh.rotation);
+                scene.add(line);
+                threeObjects.push(line);
+                const labelCanvas = document.createElement('canvas');
+                labelCanvas.width = 256;
+                labelCanvas.height = 64;
+                const lctx = labelCanvas.getContext('2d');
+                lctx.fillStyle = 'rgba(0,0,0,0.65)';
+                lctx.beginPath();
+                lctx.roundRect(0, 0, 256, 64, 10);
+                lctx.fill();
+                lctx.fillStyle = '#fff';
+                lctx.font = 'bold 22px sans-serif';
+                lctx.textAlign = 'center';
+                lctx.textBaseline = 'middle';
+                lctx.fillText(el.label, 128, 32);
+                const texture = new THREE.CanvasTexture(labelCanvas);
+                const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true,
+                depthTest: false });
+                const sprite = new THREE.Sprite(spriteMat);
+                sprite.position.set(cx, baseY + hM / 2 + 0.4, cz);
+                const sprW = Math.max(1.2, Math.min(4, wM * 0.6));
+                sprite.scale.set(sprW, sprW * 0.28, 1);
+                scene.add(sprite);
+                threeObjects.push(sprite);
+                const planMinX = du(el.x);
+                const planMaxX = du(el.x + (el.w || 10));
+                const planMinZ = du(el.y);
+                const planMaxZ = du(el.y + (el.h || 10));
+                minX = Math.min(minX, planMinX);
+                maxX = Math.max(maxX, planMaxX);
+                minZ = Math.min(minZ, planMinZ);
+                maxZ = Math.max(maxZ, planMaxZ);
+                maxH = Math.max(maxH, baseY + hM / 2);
+            });
+            if (!isFinite(minX)) { minX = -5;
+                maxX = 5;
+                minZ = -5;
+                maxZ = 5;
+                maxH = 3; }
+            rebuildThreeGrid(minX, maxX, minZ, maxZ);
+            fitThreeCamera(minX, maxX, 0, maxH, minZ, maxZ);
+            threeFitDone = true;
+        }
+
+        function animateThree() {
+            if (!threeInitialized) return;
+            requestAnimationFrame(animateThree);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        function resizeThree() {
+            if (!threeInitialized) return;
+            const container = document.getElementById('threeContainer');
+            const W = container.clientWidth || 600;
+            const H = container.clientHeight || 400;
+            camera.aspect = W / H;
+            camera.updateProjectionMatrix();
+            renderer.setSize(W, H);
+        }
+
+        function toggleView(view) {
+            currentView = view;
+            const canvas2d = document.getElementById('canvas2d');
+            const threeContainer = document.getElementById('threeContainer');
+            const tabs = document.querySelectorAll('.viewer-tabs button');
+            tabs.forEach(t => t.classList.toggle('active', t.dataset.view === view));
+            if (view === '2d') {
+                canvas2d.classList.remove('hidden');
+                threeContainer.classList.remove('active');
+                renderCanvas2D();
+            } else {
+                canvas2d.classList.add('hidden');
+                threeContainer.classList.add('active');
+                if (!threeInitialized) initThree();
+                else { buildThreeScene();
+                    resizeThree(); }
+            }
+        }
 
         // ----- RENDER PROPERTIES (professional QS panel) -----
         function getElementMetrics(el) {
@@ -2642,20 +3194,12 @@
         }
 
         function renderProperties() {
-            // Original renderProperties function, but we will call renderMarketRates afterwards.
-            // We'll keep the original but append market rates.
             const container = document.getElementById('props-container');
-            // Remove previous market rates div if any
-            const existingMarket = document.getElementById('marketRates');
-            if (existingMarket) existingMarket.remove();
-
             if (selectedIds.length === 0) {
                 container.innerHTML =
                     `<div style="color:var(--text-secondary);font-size:12px;text-align:center;padding:20px 0;">
                     <i class="fas fa-mouse-pointer" style="font-size:24px;display:block;margin-bottom:8px;"></i>
                     Select a measurement to view properties</div>`;
-                // Still show market rates
-                renderMarketRates();
                 return;
             }
             if (selectedIds.length > 1) {
@@ -2663,11 +3207,11 @@
                     `<div style="color:var(--text-secondary);font-size:12px;padding:10px 0;">
                     <strong>${selectedIds.length}</strong> elements selected<br>
                     <span style="font-size:11px;">Use Delete to remove all.</span></div>`;
-                renderMarketRates();
                 return;
             }
             const el = elements.find(e => e.id === selectedIds[0]);
-            if (!el) { renderMarketRates(); return; }
+            if (!el) return;
+            // Cutouts/deductions stay selectable; parent link via parentId only
 
             const m = getElementMetrics(el);
             const matNames = Object.keys(materialLibrary);
@@ -2686,7 +3230,7 @@
                     <div style="display:flex;justify-content:space-between;border-top:1px solid var(--border-color);padding-top:4px;"><span>Net</span><span class="total">${m.net.toFixed(3)} ${m.unit}</span></div>
                 </div></div>`;
 
-            // List deductions on this wall/beam
+            // List deductions on this wall/beam with editable opening height
             if (['wall', 'beam', 'slab', 'column'].includes(el.type) && m.cutoutCount > 0) {
                 const openingsAll = elements.filter(e =>
                     e.type === 'door' || e.type === 'window' || e.type === 'opening' || e.isDeduction || e.type === 'cutout'
@@ -2775,8 +3319,7 @@
             </div>`;
 
             container.innerHTML = html;
-            // Attach event listeners (same as original)
-            if (isConfirmed) { renderMarketRates(); return; }
+            if (isConfirmed) return;
             const attachChange = (id, setter) => {
                 const inp = document.getElementById(id);
                 if (inp) inp.addEventListener('change', () => { saveState(); setter(inp); renderAll(); });
@@ -2864,8 +3407,6 @@
                 renderAll(); });
             const delBtn = document.getElementById('prop-delete-btn');
             if (delBtn) delBtn.addEventListener('click', () => deleteSelected());
-
-            renderMarketRates();
         }
 
         function escapeHtml(str) {
@@ -2874,50 +3415,11 @@
             return d.innerHTML;
         }
 
-        // ----- COST & QUANTITY -----
+        // ----- COST & QUANTITY (unchanged) -----
         function getMaterialCost(materialName) {
             if (!materialName) return null;
             const lib = materialLibrary[materialName];
             return lib ? lib.cost : null;
-        }
-
-        function resolveRowRate(material, unit, element) {
-            if (element && element.material) {
-                const libCost = getMaterialCost(element.material);
-                if (libCost != null) return { rate: libCost, source: element.material };
-            }
-            const m = (material || '').toLowerCase();
-            const u = (unit || '').toLowerCase();
-            const o = projectOverrides;
-
-            if (m.includes('brick')) {
-                return { rate: o.brick.costPerUnit != null ? o.brick.costPerUnit : 0.45, source: 'Settings · Brick' };
-            }
-            if (m.includes('concrete')) {
-                return { rate: o.concrete.costPerM3 != null ? o.concrete.costPerM3 : 120, source: 'Settings · Concrete' };
-            }
-            if (m.includes('plaster')) {
-                return { rate: o.plaster.costPerM2 != null ? o.plaster.costPerM2 : 8.5, source: 'Settings · Plaster' };
-            }
-            if (m.includes('tiling') || m.includes('tile')) {
-                const lib = materialLibrary['Tiling 600x600'] || materialLibrary['Tiling 300x300'];
-                if (u === 'nos' && o.tiling) {
-                    const sz = o.tiling.size || [600, 600];
-                    const tileArea = (sz[0] / 1000) * (sz[1] / 1000);
-                    const costM2 = o.tiling.costPerM2 != null ? o.tiling.costPerM2 : (lib ? lib.cost : 35);
-                    return { rate: costM2 * tileArea, source: 'Settings · Tiling (per tile)' };
-                }
-                return { rate: o.tiling.costPerM2 != null ? o.tiling.costPerM2 : 35, source: 'Settings · Tiling' };
-            }
-            if (m.includes('paint')) {
-                return { rate: o.painting.costPerL != null ? o.painting.costPerL : 12, source: 'Settings · Paint' };
-            }
-            if (m.includes('cutout') || m.includes('opening')) {
-                return { rate: 0, source: 'Deduction (no cost)' };
-            }
-            const libCost = getMaterialCost(material);
-            if (libCost != null) return { rate: libCost, source: material };
-            return { rate: 0, source: '—' };
         }
 
         function getElementCost(el) {
@@ -2933,16 +3435,15 @@
             }
             const area = el.w * s * el.h * s;
             const vol = area * (el.zHeight || 0.15);
-            const o = projectOverrides;
             switch (el.type) {
                 case 'wall':
-                    return vol * (o.concrete.costPerM3 || 120);
+                    return vol * 120;
                 case 'column':
-                    return vol * (o.concrete.costPerM3 || 140);
+                    return vol * 140;
                 case 'slab':
-                    return vol * (o.concrete.costPerM3 || 110);
+                    return vol * 110;
                 case 'beam':
-                    return vol * (o.concrete.costPerM3 || 130);
+                    return vol * 130;
                 case 'door':
                     return 150;
                 case 'window':
@@ -2950,21 +3451,6 @@
                 default:
                     return area * 20;
             }
-        }
-
-        function attachCost(row, element) {
-            if (element && element.costOverride != null && element.costOverride !== undefined) {
-                row.rate = null;
-                row.amount = Number(element.costOverride);
-                row.rateNote = 'Override';
-                return row;
-            }
-            const resolved = resolveRowRate(row.material, row.unit, element);
-            const qtyNum = parseFloat(row.qty);
-            row.rate = resolved.rate;
-            row.amount = (isFinite(qtyNum) && isFinite(resolved.rate)) ? qtyNum * resolved.rate : 0;
-            row.rateNote = resolved.source;
-            return row;
         }
 
         function overlapArea(a, b) {
@@ -3068,7 +3554,7 @@
                 totalBrickQty += count;
                 totalPlasterArea += netArea;
                 const dedNote = dedRemarks.length ? ` Openings: ${dedRemarks.join(', ')}` : '';
-                rows.push(attachCost({
+                rows.push({
                     material: 'Brickwork',
                     element: w.label,
                     qty: count,
@@ -3079,7 +3565,7 @@
                     remarks: `Net Vol: ${vol.toFixed(3)} m³ · bricks ${count}${dedNote}`,
                     elementId: w.id,
                     elementLabel: w.label
-                }, w));
+                });
             });
             const conc = projectOverrides.concrete;
 
@@ -3107,7 +3593,7 @@
                 const cutArea = hits.reduce((s, h) => s + h.areaDraw * cf * cf, 0);
                 const netArea = Math.max(0, grossArea - cutArea);
                 const br = concreteBreakdown(netVol);
-                rows.push(attachCost({
+                rows.push({
                     material: materialLabel,
                     element: el.label,
                     qty: netVol.toFixed(3),
@@ -3118,13 +3604,14 @@
                     remarks: `${br.note}${dedNote}`,
                     elementId: el.id,
                     elementLabel: el.label
-                }, el));
+                });
                 return { grossArea, netArea, netVol };
             }
             let totalTileArea = 0;
             slabs.forEach(s => { const r = processHorizontal(s, 'Concrete – Slab');
                 totalTileArea += r.netArea; });
             columns.forEach(c => {
+                // Plan area: polygon area if vertices exist, else bounding box
                 let planAreaDraw;
                 if (c.vertices && c.vertices.length >= 3) {
                     const absPts = c.vertices.map(v => ({ x: c.x + v.x, y: c.y + v.y }));
@@ -3146,7 +3633,7 @@
                 const netVol = Math.max(0, grossVol - deductVol);
                 const dedNote = dedRemarks.length ? ` · Deduct: ${dedRemarks.join(', ')}` : '';
                 const brC = concreteBreakdown(netVol);
-                rows.push(attachCost({
+                rows.push({
                     material: 'Concrete – Column',
                     element: c.label,
                     qty: netVol.toFixed(3),
@@ -3154,7 +3641,7 @@
                     remarks: `${brC.note}${dedNote}`,
                     elementId: c.id,
                     elementLabel: c.label
-                }, c));
+                });
             });
             beams.forEach(b => {
                 const grossVol = (b.isLine && b.length != null)
@@ -3176,7 +3663,7 @@
                 const netVol = Math.max(0, grossVol - deductVol);
                 const dedNote = dedRemarks.length ? ` · Deduct: ${dedRemarks.join(', ')}` : '';
                 const brB = concreteBreakdown(netVol);
-                rows.push(attachCost({
+                rows.push({
                     material: 'Concrete – Beam',
                     element: b.label,
                     qty: netVol.toFixed(3),
@@ -3184,14 +3671,16 @@
                     remarks: `${brB.note}${dedNote}`,
                     elementId: b.id,
                     elementLabel: b.label
-                }, b));
+                });
             });
             openingsAll.forEach(o => {
+                // Plan / face area of cutout
                 let areaM2;
                 if (o.vertices && o.vertices.length >= 3) {
                     const abs = o.vertices.map(v => ({ x: o.x + v.x, y: o.y + v.y }));
                     areaM2 = polygonArea(abs) * cf * cf;
                 } else {
+                    // For wall-face openings prefer width along parent × opening height when parent is a line wall
                     const parent = o.parentId != null ? elements.find(e => e.id === o.parentId) : null;
                     if (parent && parent.isLine && parent.p1 && parent.p2) {
                         let openWidthDraw = cutoutWidthAlongLine(parent, o);
@@ -3202,7 +3691,9 @@
                         areaM2 = Math.max(o.w, o.h) * cf * Math.max(0.01, o.zHeight || 2.1);
                     }
                 }
-                const depth = (o.depth != null && o.depth > 0) ? o.depth : 0;
+                // Depth/thickness turns area cutout into volume (m³)
+                const depth = (o.depth != null && o.depth > 0) ? o.depth
+                    : ((o.thickness != null && o.thickness > 0 && o._hasDepth) ? o.thickness : 0);
                 const hosts = [];
                 [...walls, ...slabs, ...columns, ...beams].forEach(host => {
                     if (o.parentId === host.id || overlapArea(host, o) > 0) hosts.push(host.label);
@@ -3210,7 +3701,7 @@
                 const hostNote = hosts.length ? `Affects: ${hosts.join(', ')}` : 'No host overlap';
                 if (depth > 0) {
                     const vol = areaM2 * depth;
-                    rows.push(attachCost({
+                    rows.push({
                         material: 'Cutout / Opening',
                         element: o.label,
                         qty: vol.toFixed(3),
@@ -3221,9 +3712,9 @@
                         remarks: `Area ${areaM2.toFixed(3)} m² × depth ${depth} m = ${vol.toFixed(3)} m³ · ${hostNote}`,
                         elementId: o.id,
                         elementLabel: o.label
-                    }, o));
+                    });
                 } else {
-                    rows.push(attachCost({
+                    rows.push({
                         material: 'Cutout / Opening',
                         element: o.label,
                         qty: areaM2.toFixed(2),
@@ -3234,11 +3725,11 @@
                         remarks: `Area ${areaM2.toFixed(2)} m² (no depth) · ${hostNote}`,
                         elementId: o.id,
                         elementLabel: o.label
-                    }, o));
+                    });
                 }
             });
             const plas = plasterBreakdown(totalPlasterArea);
-            rows.push(attachCost({
+            rows.push({
                 material: 'Plastering',
                 element: 'All Walls',
                 qty: totalPlasterArea.toFixed(2),
@@ -3248,9 +3739,9 @@
                 elementLabel: 'All Walls',
                 isAggregate: true,
                 aggregateType: 'walls'
-            }, null));
+            });
             const tiles = tileCount(totalTileArea);
-            rows.push(attachCost({
+            rows.push({
                 material: 'Tiling',
                 element: 'Floor Areas (from Slabs)',
                 qty: tiles.count,
@@ -3260,9 +3751,9 @@
                 elementLabel: 'Floor Areas',
                 isAggregate: true,
                 aggregateType: 'tile'
-            }, null));
+            });
             const paintInfo = paintLitres(totalPlasterArea);
-            rows.push(attachCost({
+            rows.push({
                 material: 'Painting',
                 element: 'All Walls',
                 qty: paintInfo.litres,
@@ -3272,13 +3763,13 @@
                 elementLabel: 'All Walls',
                 isAggregate: true,
                 aggregateType: 'walls'
-            }, null));
+            });
             elements.forEach(el => {
                 if (['wall', 'slab', 'column', 'beam'].includes(el.type)) {
                     const existing = rows.find(r => r.elementId === el.id);
                     if (!existing) {
                         const vol = (el.w * cf) * (el.h * cf) * (el.zHeight || 0.15);
-                        rows.push(attachCost({
+                        rows.push({
                             material: el.type.charAt(0).toUpperCase() + el.type.slice(1),
                             element: el.label,
                             qty: vol.toFixed(3),
@@ -3286,7 +3777,7 @@
                             remarks: el.material ? `Mat: ${el.material}` : '',
                             elementId: el.id,
                             elementLabel: el.label
-                        }, el));
+                        });
                     }
                 }
             });
@@ -3297,7 +3788,6 @@
             const tbody = document.getElementById('table-body');
             const rows = computeQuantities();
             let html = '';
-            let grandTotal = 0;
             rows.forEach((row, index) => {
                 const activeClass = row.elementId && selectedIds.includes(row.elementId) ? 'active-row' : '';
                 const dataAttrs =
@@ -3305,10 +3795,6 @@
                 const gross = row.gross != null ? row.gross : row.qty;
                 const cutout = row.cutout != null ? row.cutout : '—';
                 const net = row.net != null ? row.net : row.qty;
-                const rateStr = row.rate != null ? Number(row.rate).toFixed(2) : '—';
-                const amountNum = row.amount != null ? Number(row.amount) : 0;
-                grandTotal += amountNum;
-                const amountStr = amountNum ? amountNum.toFixed(2) : '—';
                 html += `<tr class="${activeClass}" ${dataAttrs}>
               <td>${row.material}</td>
               <td>${row.element}</td>
@@ -3316,16 +3802,9 @@
               <td style="color:var(--danger);">${cutout}</td>
               <td><strong>${net}</strong></td>
               <td>${row.unit}</td>
-              <td title="${escapeHtml(row.rateNote || '')}">${rateStr}</td>
-              <td style="font-weight:600;color:var(--success);">${amountStr}</td>
               <td style="font-size:11px;color:var(--text-secondary);">${row.remarks}</td>
             </tr>`;
             });
-            html += `<tr style="background:var(--bg-secondary);font-weight:700;">
-              <td colspan="7" style="text-align:right;padding:6px 8px;">Project Total</td>
-              <td style="color:var(--success);font-size:14px;padding:6px 8px;">${grandTotal.toFixed(2)}</td>
-              <td></td>
-            </tr>`;
             tbody.innerHTML = html;
             tbody.querySelectorAll('tr').forEach(tr => {
                 tr.addEventListener('click', function(e) {
@@ -3351,16 +3830,1121 @@
             });
         }
 
-        // ----- CANVAS INTERACTION (unchanged) -----
+        // ================================================================
+        //  CANVAS INTERACTION  (with ENTER key to close polygon)
+        //  + Hover detection for deduction tools
+        // ================================================================
         function setupCanvasInteraction() {
-            // Same as original, we keep it.
-            // We'll just include the original code here (for brevity, we assume it's the same).
-            // In the final file, we'll include the full function.
+            const canvas = document.getElementById('canvas2d');
+            let startX, startY;
+            let isPanning = false;
+            let spaceHeld = false;
+
+            window.addEventListener('keydown', (e) => {
+                const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+                const isEditing = tag === 'input' || tag === 'textarea' || tag === 'select' || e.target
+                .isContentEditable;
+
+                if (e.code === 'Space' && !e.repeat) {
+                    if (document.activeElement === document.body || document.activeElement === canvas) {
+                        e.preventDefault();
+                    }
+                    spaceHeld = true;
+                    if (!mouseDown && currentView === '2d') canvas.style.cursor = 'grab';
+                    return;
+                }
+
+                if (!isEditing && currentView === '2d' && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(
+                        e.key)) {
+                    e.preventDefault();
+                    const step = e.shiftKey ? 80 : 30;
+                    if (e.key === 'ArrowLeft') viewport.offsetX += step;
+                    if (e.key === 'ArrowRight') viewport.offsetX -= step;
+                    if (e.key === 'ArrowUp') viewport.offsetY += step;
+                    if (e.key === 'ArrowDown') viewport.offsetY -= step;
+                    renderCanvas2D();
+                    return;
+                }
+
+                // ENTER: Complete current drawing
+                if ((e.key === 'Enter' || e.key === 'Return') && !isEditing) {
+                    if (['slab', 'cutout', 'column'].includes(currentTool) && polygonPoints.length >= 3) {
+                        e.preventDefault();
+                        completeDrawing();
+                        return;
+                    }
+                    if (currentTool === 'deduction_wall' && deductionLinePoints.length >= 2) {
+                        e.preventDefault();
+                        completeDeductionLine();
+                        return;
+                    }
+                    if ((currentTool === 'wall' || currentTool === 'beam') && polygonPoints.length >= 2) {
+                        e.preventDefault();
+                        completeWallBeamLine();
+                        return;
+                    }
+                }
+
+                // Shortcuts
+                if ((e.ctrlKey || e.metaKey) && e.key === 'z') { e.preventDefault(); if (e.shiftKey) redo();
+                    else undo(); return; }
+                if ((e.ctrlKey || e.metaKey) && e.key === 'y') { e.preventDefault();
+                    redo(); return; }
+                if ((e.ctrlKey || e.metaKey) && e.key === 'a') { e.preventDefault();
+                    selectAllElements(); return; }
+                if ((e.ctrlKey || e.metaKey) && e.key === 'c') { e.preventDefault();
+                    copySelected(); return; }
+                if ((e.ctrlKey || e.metaKey) && e.key === 'v') { e.preventDefault();
+                    pasteClipboard(); return; }
+                if ((e.ctrlKey || e.metaKey) && e.key === 'd') { e.preventDefault();
+                    duplicateSelected(); return; }
+                if ((e.ctrlKey || e.metaKey) && e.key === '=') { e.preventDefault();
+                    document.getElementById('btnZoomIn').click(); return; }
+                if ((e.ctrlKey || e.metaKey) && e.key === '-') { e.preventDefault();
+                    document.getElementById('btnZoomOut').click(); return; }
+                if ((e.ctrlKey || e.metaKey) && e.key === '0') { e.preventDefault();
+                    document.getElementById('btnZoomFit').click(); return; }
+                if (e.key === '1' && !isEditing) toggleView('2d');
+                if (e.key === '2' && !isEditing) toggleView('3d');
+                if (e.key === 'm' && !isEditing) { document.querySelector('[data-tool="measure"]').click(); }
+                if (e.key === 'c' && !isEditing && !e.ctrlKey && !e.metaKey) {
+                    const btn = document.querySelector('[data-tool="calibrate"]');
+                    if (btn) btn.click();
+                }
+                if ((e.key === 'Delete' || e.key === 'Backspace') && !isEditing) {
+                    e.preventDefault();
+                    deleteSelected();
+                    return;
+                }
+                if (e.key === 'Escape' && !isEditing) {
+                    if (polygonPoints.length > 0 || drawPreview || deductionLinePoints.length > 0) {
+                        cancelDrawing();
+                        return;
+                    }
+                    if (dragMode === 'draw') {
+                        dragMode = null;
+                        drawStartWorld = null;
+                        drawCurrentWorld = null;
+                        drawPreview = null;
+                        document.getElementById('canvas2d').style.cursor = currentTool ? 'crosshair' : 'default';
+                        document.getElementById('statusMode').textContent = currentTool ? 'Draw: ' + currentTool :
+                            'Select';
+                        renderCanvas2D();
+                        return;
+                    }
+                    if (currentTool) {
+                        currentTool = null;
+                        document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('tool-active'));
+                        document.getElementById('statusMode').textContent = 'Select';
+                        document.getElementById('canvas2d').style.cursor = 'default';
+                        renderAll();
+                        return;
+                    }
+                    selectedIds = [];
+                    renderAll();
+                }
+            });
+
+            window.addEventListener('keyup', (e) => {
+                if (e.code === 'Space') {
+                    spaceHeld = false;
+                    if (dragMode !== 'pan') {
+                        canvas.style.cursor = currentTool ? 'crosshair' : 'default';
+                    }
+                }
+            });
+
+            canvas.addEventListener('wheel', (e) => {
+                if (currentView === '3d') return;
+                e.preventDefault();
+                const rect = canvas.getBoundingClientRect();
+                const sx = e.clientX - rect.left;
+                const sy = e.clientY - rect.top;
+                const world = screenToWorld(sx, sy);
+                const delta = e.deltaY > 0 ? -0.1 : 0.1;
+                let newScale = viewport.scale * (1 + delta);
+                newScale = Math.min(Math.max(0.1, newScale), 10);
+                viewport.offsetX = sx - world.x * newScale;
+                viewport.offsetY = sy - world.y * newScale;
+                viewport.scale = newScale;
+                renderCanvas2D();
+                document.getElementById('statusCursor').textContent =
+                    `(${Math.round(world.x)}, ${Math.round(world.y)})`;
+            }, { passive: false });
+
+            canvas.addEventListener('mousedown', (e) => {
+                if (isConfirmed || currentView === '3d') return;
+                const rect = canvas.getBoundingClientRect();
+                const sx = e.clientX - rect.left;
+                const sy = e.clientY - rect.top;
+                const world = screenToWorld(sx, sy);
+                startX = sx;
+                startY = sy;
+                mouseDown = true;
+
+                if (e.button === 1 || (e.button === 0 && (e.altKey || spaceHeld))) {
+                    isPanning = true;
+                    dragMode = 'pan';
+                    canvas.style.cursor = 'grabbing';
+                    e.preventDefault();
+                    return;
+                }
+
+                if (currentTool === 'pan' && e.button === 0) {
+                    isPanning = true;
+                    dragMode = 'pan';
+                    canvas.style.cursor = 'grabbing';
+                    e.preventDefault();
+                    return;
+                }
+
+                if (currentTool === 'calibrate' && e.button === 0) {
+                    calibratePoints.push({ x: world.x, y: world.y });
+                    if (calibratePoints.length > 2) calibratePoints = [{ x: world.x, y: world.y }];
+                    calibratePreview = null;
+                    renderCanvas2D();
+                    if (calibratePoints.length === 1) {
+                        document.getElementById('statusMode').textContent = 'Calibrate: click 2nd point';
+                    } else if (calibratePoints.length === 2) {
+                        finishCalibration(calibratePoints[0], calibratePoints[1]);
+                    }
+                    return;
+                }
+
+                if (currentTool === 'measure' && e.button === 0) {
+                    measurePoints.push({ x: world.x, y: world.y });
+                    if (measurePoints.length > 2) measurePoints.shift();
+                    renderCanvas2D();
+                    if (measurePoints.length === 2) {
+                        const p1 = measurePoints[0],
+                            p2 = measurePoints[1];
+                        const dist = toMeters(Math.sqrt((p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2));
+                        document.getElementById('statusCursor').textContent =
+                            `📏 ${dist.toFixed(2)} m (${measurePoints.length} pts)`;
+                        const label = document.getElementById('measureLabel');
+                        label.textContent = dist.toFixed(2) + ' m';
+                        label.style.display = 'block';
+                        const sp = worldToScreen((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
+                        label.style.left = sp.x + 'px';
+                        label.style.top = (sp.y - 20) + 'px';
+                    }
+                    return;
+                }
+
+                // ---- Deduction Wall continuous polyline with snapping ----
+                if (currentTool === 'deduction_wall' && e.button === 0) {
+                    let pt;
+                    if (hoveredParentId) {
+                        const parent = elements.find(el => el.id === hoveredParentId);
+                        if (parent && parent.isLine && parent.p1 && parent.p2) {
+                            const nearest = nearestPointOnSegment(
+                                world.x, world.y,
+                                parent.p1.x, parent.p1.y,
+                                parent.p2.x, parent.p2.y
+                            );
+                            pt = { x: nearest.x, y: nearest.y };
+                            if (deductionLinePoints.length === 0) deductionParentId = parent.id;
+                        }
+                    }
+                    if (!pt) pt = snapPoint(world);
+                    // Snap subsequent points to same parent if available
+                    if (deductionParentId && deductionLinePoints.length > 0) {
+                        const parent = elements.find(el => el.id === deductionParentId);
+                        if (parent && parent.isLine && parent.p1 && parent.p2) {
+                            const nearest = nearestPointOnSegment(
+                                world.x, world.y,
+                                parent.p1.x, parent.p1.y,
+                                parent.p2.x, parent.p2.y
+                            );
+                            pt = { x: nearest.x, y: nearest.y };
+                        }
+                    }
+                    deductionLinePoints.push(pt);
+                    continuousTempPreview = null;
+                    const n = deductionLinePoints.length;
+                    document.getElementById('statusMode').textContent =
+                        `Deduction Wall: ${n} point(s) · click more · Enter/Done/double-click to finish · Esc cancel`;
+                    renderCanvas2D();
+                    return;
+                }
+
+                // ---- Polygon tools (slab, cutout) ----
+                if (['slab', 'cutout', 'column'].includes(currentTool) && e.button === 0) {
+                    const snapped = snapPoint(world);
+                    polygonPoints.push(snapped);
+                    polygonTempLine = null;
+                    polygonElementType = currentTool;
+                    const n = polygonPoints.length;
+                    const hint = n >= 3 ? ' · Enter / Done to finish' : ' · need 3+ points';
+                    document.getElementById('statusMode').textContent =
+                        `${currentTool}: ${n} vertices${hint}`;
+                    renderCanvas2D();
+                    return;
+                }
+
+                // ---- Wall / Beam continuous polyline ----
+                if ((currentTool === 'wall' || currentTool === 'beam') && e.button === 0) {
+                    const snapped = snapPoint(world);
+                    polygonPoints.push(snapped);
+                    continuousTempPreview = null;
+                    const n = polygonPoints.length;
+                    document.getElementById('statusMode').textContent =
+                        `${currentTool}: ${n} point(s) · click more · Enter/Done/double-click to finish · Esc cancel`;
+                    renderCanvas2D();
+                    return;
+                }
+
+                // Column uses polygon mode (handled with slab/cutout above)
+
+
+                // ---- Element selection + vertex/endpoint editing ----
+                if (e.button === 0) {
+                    // First: try hit-test control points of selected element (reshape)
+                    if (selectedIds.length === 1 && (!currentTool || currentTool === 'select')) {
+                        const el = elements.find(ee => ee.id === selectedIds[0]);
+                        if (el && !el.locked) {
+                            const hs = 10 / viewport.scale;
+                            // Line endpoints
+                            if (el.isLine && el.p1 && el.p2) {
+                                if (Math.hypot(world.x - el.p1.x, world.y - el.p1.y) <= hs) {
+                                    editingVertex = { elId: el.id, endpoint: 'p1' };
+                                    dragMode = 'reshape';
+                                    saveState();
+                                    return;
+                                }
+                                if (Math.hypot(world.x - el.p2.x, world.y - el.p2.y) <= hs) {
+                                    editingVertex = { elId: el.id, endpoint: 'p2' };
+                                    dragMode = 'reshape';
+                                    saveState();
+                                    return;
+                                }
+                            }
+                            // Polygon vertices
+                            if (el.vertices && el.vertices.length >= 3) {
+                                for (let vi = 0; vi < el.vertices.length; vi++) {
+                                    const vx = el.x + el.vertices[vi].x;
+                                    const vy = el.y + el.vertices[vi].y;
+                                    if (Math.hypot(world.x - vx, world.y - vy) <= hs) {
+                                        editingVertex = { elId: el.id, vertexIndex: vi };
+                                        dragMode = 'reshape';
+                                        saveState();
+                                        return;
+                                    }
+                                }
+                            }
+                            // Box handles for rect elements
+                            if (!el.isLine && !el.vertices) {
+                                const handles = [
+                                    ['nw', el.x, el.y], ['n', el.x + el.w / 2, el.y], ['ne', el.x + el.w, el.y],
+                                    ['w', el.x, el.y + el.h / 2], ['e', el.x + el.w, el.y + el.h / 2],
+                                    ['sw', el.x, el.y + el.h], ['s', el.x + el.w / 2, el.y + el.h],
+                                    ['se', el.x + el.w, el.y + el.h]
+                                ];
+                                for (const [name, hx, hy] of handles) {
+                                    if (Math.abs(world.x - hx) <= hs && Math.abs(world.y - hy) <= hs) {
+                                        editingVertex = { elId: el.id, handle: name, start: { x: el.x, y: el.y, w: el.w, h: el.h } };
+                                        dragMode = 'reshape';
+                                        saveState();
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    let foundEl = null;
+                    for (let i = elements.length - 1; i >= 0; i--) {
+                        const el = elements[i];
+                        if (el.hidden) continue;
+                        if (el.isLine && el.p1 && el.p2) {
+                            const ax = el.p1.x, ay = el.p1.y, bx = el.p2.x, by = el.p2.y;
+                            const abx = bx - ax, aby = by - ay;
+                            const len2 = abx * abx + aby * aby || 1;
+                            let t = ((world.x - ax) * abx + (world.y - ay) * aby) / len2;
+                            t = Math.max(0, Math.min(1, t));
+                            const px = ax + t * abx, py = ay + t * aby;
+                            const thk = toDrawing(el.thickness || 0.15) / 2 + 6 / viewport.scale;
+                            if (Math.hypot(world.x - px, world.y - py) <= thk) {
+                                foundEl = el;
+                                break;
+                            }
+                        } else if (world.x >= el.x && world.x <= el.x + el.w && world.y >= el.y && world.y <= el.y + el.h) {
+                            foundEl = el;
+                            break;
+                        }
+                    }
+                    if (foundEl) {
+                        if (!e.shiftKey) {
+                            selectedIds = expandSelectionWithChildren([foundEl.id]);
+                        } else {
+                            const idx = selectedIds.indexOf(foundEl.id);
+                            if (idx > -1) {
+                                const removeSet = new Set(expandSelectionWithChildren([foundEl.id]));
+                                selectedIds = selectedIds.filter(id => !removeSet.has(id));
+                            } else {
+                                selectedIds = expandSelectionWithChildren([...selectedIds, foundEl.id]);
+                            }
+                        }
+                        dragMode = 'select';
+                        dragElementStart = {};
+                        elements.forEach(el => {
+                            if (selectedIds.includes(el.id)) {
+                                dragElementStart[el.id] = {
+                                    x: el.x, y: el.y, w: el.w, h: el.h,
+                                    p1: el.p1 ? { ...el.p1 } : null,
+                                    p2: el.p2 ? { ...el.p2 } : null,
+                                };
+                            }
+                        });
+                        renderAll();
+                        return;
+                    }
+                    if (!e.shiftKey) { selectedIds = []; renderAll(); }
+                    dragMode = 'select';
+                    dragElementStart = {};
+                }
+            });
+
+            canvas.addEventListener('mousemove', (e) => {
+                if (currentView === '3d') return;
+                const rect = canvas.getBoundingClientRect();
+                const sx = e.clientX - rect.left;
+                const sy = e.clientY - rect.top;
+                const world = screenToWorld(sx, sy);
+                document.getElementById('statusCursor').textContent =
+                    `(${Math.round(world.x)}, ${Math.round(world.y)})`;
+
+                // ---- Hover detection for deduction tools ----
+                if (currentTool === 'deduction_wall') {
+                    const targetType = currentTool === 'deduction_wall' ? 'wall' : 'beam';
+                    let found = null;
+                    for (let i = elements.length - 1; i >= 0; i--) {
+                        const el = elements[i];
+                        if (el.hidden || el.type !== targetType) continue;
+                        if (el.isLine && el.p1 && el.p2) {
+                            const ax = el.p1.x,
+                                ay = el.p1.y,
+                                bx = el.p2.x,
+                                by = el.p2.y;
+                            const abx = bx - ax,
+                                aby = by - ay;
+                            const len2 = abx * abx + aby * aby || 1;
+                            let t = ((world.x - ax) * abx + (world.y - ay) * aby) / len2;
+                            t = Math.max(0, Math.min(1, t));
+                            const px = ax + t * abx,
+                                py = ay + t * aby;
+                            const thk = toDrawing(el.thickness || 0.15) / 2 + 10 / viewport.scale;
+                            if (Math.hypot(world.x - px, world.y - py) <= thk) {
+                                found = el;
+                                break;
+                            }
+                        }
+                    }
+                    if (found) {
+                        hoveredParentId = found.id;
+                        canvas.style.cursor = 'pointer';
+                        document.getElementById('statusMode').textContent =
+                            `Hovering over ${found.label} — click to start deduction`;
+                    } else {
+                        if (hoveredParentId) {
+                            hoveredParentId = null;
+                            canvas.style.cursor = 'crosshair';
+                            if (deductionLinePoints.length === 0) {
+                                document.getElementById('statusMode').textContent =
+                                    `Deduction Wall: click on a wall to snap, or click anywhere`;
+                            }
+                        }
+                    }
+                    renderCanvas2D();
+                    return;
+                } else {
+                    if (hoveredParentId) {
+                        hoveredParentId = null;
+                        renderCanvas2D();
+                    }
+                }
+
+                if (currentTool === 'calibrate' && calibratePoints.length === 1) {
+                    calibratePreview = { x: world.x, y: world.y };
+                    const p1 = calibratePoints[0];
+                    const dist = Math.sqrt((world.x - p1.x) ** 2 + (world.y - p1.y) ** 2);
+                    document.getElementById('statusMode').textContent =
+                        `Calibrate: click 2nd point · ${dist.toFixed(2)} units`;
+                    renderCanvas2D();
+                    return;
+                }
+
+                // Continuous wall / beam live preview
+                if ((currentTool === 'wall' || currentTool === 'beam') && polygonPoints.length > 0) {
+                    const snapped = snapPoint(world);
+                    const last = polygonPoints[polygonPoints.length - 1];
+                    continuousTempPreview = { x1: last.x, y1: last.y, x2: snapped.x, y2: snapped.y };
+                    const dist = Math.hypot(snapped.x - last.x, snapped.y - last.y);
+                    const distM = toMeters(dist);
+                    const n = polygonPoints.length;
+                    document.getElementById('statusMode').textContent =
+                        `${currentTool}: ${n} pts · next ${distM.toFixed(2)} m · Enter/Done to finish`;
+                    renderCanvas2D();
+                    return;
+                }
+
+                // Continuous deduction wall live preview
+                if (currentTool === 'deduction_wall' && deductionLinePoints.length > 0) {
+                    let pt = snapPoint(world);
+                    if (deductionParentId) {
+                        const parent = elements.find(el => el.id === deductionParentId);
+                        if (parent && parent.isLine && parent.p1 && parent.p2) {
+                            const nearest = nearestPointOnSegment(world.x, world.y, parent.p1.x, parent.p1.y, parent.p2.x, parent.p2.y);
+                            pt = { x: nearest.x, y: nearest.y };
+                        }
+                    } else if (hoveredParentId) {
+                        const parent = elements.find(el => el.id === hoveredParentId);
+                        if (parent && parent.isLine && parent.p1 && parent.p2) {
+                            const nearest = nearestPointOnSegment(world.x, world.y, parent.p1.x, parent.p1.y, parent.p2.x, parent.p2.y);
+                            pt = { x: nearest.x, y: nearest.y };
+                        }
+                    }
+                    const last = deductionLinePoints[deductionLinePoints.length - 1];
+                    continuousTempPreview = { x1: last.x, y1: last.y, x2: pt.x, y2: pt.y };
+                    const dist = Math.hypot(pt.x - last.x, pt.y - last.y);
+                    const distM = toMeters(dist);
+                    document.getElementById('statusMode').textContent =
+                        `Deduction Wall: ${deductionLinePoints.length} pts · next ${distM.toFixed(2)} m · Enter/Done to finish`;
+                    renderCanvas2D();
+                    return;
+                }
+
+                if (['slab', 'cutout', 'column'].includes(currentTool) &&
+                    polygonPoints.length > 0 && !isPolygonClosed) {
+                    const snapped = snapPoint(world);
+                    const last = polygonPoints[polygonPoints.length - 1];
+                    polygonTempLine = { x1: last.x, y1: last.y, x2: snapped.x, y2: snapped.y };
+                    const dist = Math.hypot(snapped.x - last.x, snapped.y - last.y);
+                    const distM = toMeters(dist);
+                    const n = polygonPoints.length;
+                    const ready = n >= 3 ? ' · Enter / Done to finish' : ` · need ${3 - n} more`;
+                    document.getElementById('statusMode').textContent =
+                        `${currentTool}: ${n} vertices · next seg ${distM.toFixed(2)} m${ready}`;
+                    renderCanvas2D();
+                    return;
+                }
+
+                if (dragMode === 'pan' && isPanning) {
+                    const dx = sx - startX,
+                        dy = sy - startY;
+                    viewport.offsetX += dx;
+                    viewport.offsetY += dy;
+                    startX = sx;
+                    startY = sy;
+                    renderCanvas2D();
+                    return;
+                }
+
+
+
+                // Reshape: drag vertex / endpoint / handle
+                if (dragMode === 'reshape' && mouseDown && editingVertex) {
+                    const el = elements.find(ee => ee.id === editingVertex.elId);
+                    if (el && !el.locked) {
+                        const snapped = snapPoint(world);
+                        if (editingVertex.endpoint === 'p1') {
+                            el.p1 = { x: snapped.x, y: snapped.y };
+                            syncLineBounds(el);
+                        } else if (editingVertex.endpoint === 'p2') {
+                            el.p2 = { x: snapped.x, y: snapped.y };
+                            syncLineBounds(el);
+                        } else if (editingVertex.vertexIndex != null && el.vertices) {
+                            const vi = editingVertex.vertexIndex;
+                            el.vertices[vi] = { x: snapped.x - el.x, y: snapped.y - el.y };
+                            // Update bounds from vertices
+                            const absPts = el.vertices.map(v => ({ x: el.x + v.x, y: el.y + v.y }));
+                            const b = polygonBounds(absPts);
+                            if (b) {
+                                const ox = el.x, oy = el.y;
+                                el.x = b.x; el.y = b.y; el.w = b.w; el.h = b.h;
+                                el.vertices = absPts.map(p => ({ x: p.x - b.x, y: p.y - b.y }));
+                            }
+                        } else if (editingVertex.handle && editingVertex.start) {
+                            const s = editingVertex.start;
+                            let nx = s.x, ny = s.y, nw = s.w, nh = s.h;
+                            const h = editingVertex.handle;
+                            if (h.includes('e')) nw = Math.max(5, snapped.x - s.x);
+                            if (h.includes('w')) { nw = Math.max(5, s.x + s.w - snapped.x); nx = snapped.x; }
+                            if (h.includes('s')) nh = Math.max(5, snapped.y - s.y);
+                            if (h.includes('n')) { nh = Math.max(5, s.y + s.h - snapped.y); ny = snapped.y; }
+                            el.x = nx; el.y = ny; el.w = nw; el.h = nh;
+                        }
+                        renderAll();
+                    }
+                }
+
+                if (dragMode === 'select' && mouseDown && selectedIds.length > 0) {
+                    const clickWorld = screenToWorld(startX, startY);
+                    const dx = world.x - clickWorld.x,
+                        dy = world.y - clickWorld.y;
+                    let moved = false;
+                    elements.forEach(el => {
+                        if (selectedIds.includes(el.id) && !el.locked) {
+                            const start = dragElementStart[el.id];
+                            if (start) {
+                                el.x = start.x + dx;
+                                el.y = start.y + dy;
+                                if (start.p1 && start.p2) {
+                                    el.p1 = { x: start.p1.x + dx, y: start.p1.y + dy };
+                                    el.p2 = { x: start.p2.x + dx, y: start.p2.y + dy };
+                                    syncLineBounds(el);
+                                }
+                                moved = true;
+                            }
+                        }
+                    });
+                    if (moved) renderAll();
+                }
+
+                // Resize handle hover
+                if (selectedIds.length === 1 && (currentTool === 'select' || currentTool === 'move' || !currentTool)) {
+                    const el = elements.find(ee => ee.id === selectedIds[0]);
+                    if (el && !el.locked) {
+                        const hs = 10 / viewport.scale;
+                        let foundHandle = false;
+                        if (el.vertices && el.vertices.length >= 3) {
+                            for (let i = 0; i < el.vertices.length; i++) {
+                                const vx = el.x + el.vertices[i].x,
+                                    vy = el.y + el.vertices[i].y;
+                                if (Math.hypot(world.x - vx, world.y - vy) <= hs) {
+                                    foundHandle = true;
+                                    canvas.style.cursor = 'pointer';
+                                    break;
+                                }
+                            }
+                        }
+                        if (el.isLine && el.p1 && el.p2) {
+                            if (Math.hypot(world.x - el.p1.x, world.y - el.p1.y) <= hs ||
+                                Math.hypot(world.x - el.p2.x, world.y - el.p2.y) <= hs) {
+                                foundHandle = true;
+                                canvas.style.cursor = 'pointer';
+                            }
+                        }
+                        if (!foundHandle && !el.isLine) {
+                            const handles = [
+                                [el.x, el.y],
+                                [el.x + el.w / 2, el.y],
+                                [el.x + el.w, el.y],
+                                [el.x, el.y + el.h / 2],
+                                [el.x + el.w, el.y + el.h / 2],
+                                [el.x, el.y + el.h],
+                                [el.x + el.w / 2, el.y + el.h],
+                                [el.x + el.w, el.y + el.h]
+                            ];
+                            for (const [hx, hy] of handles) {
+                                if (Math.abs(world.x - hx) <= hs && Math.abs(world.y - hy) <= hs) {
+                                    foundHandle = true;
+                                    canvas.style.cursor = 'pointer';
+                                    break;
+                                }
+                            }
+                        }
+                        if (!foundHandle) canvas.style.cursor = 'default';
+                    }
+                }
+            });
+
+            canvas.addEventListener('mouseup', (e) => {
+                if (isConfirmed || currentView === '3d') return;
+
+                if (dragMode === 'select' && mouseDown) {
+                    const moved = elements.some(el => {
+                        if (!selectedIds.includes(el.id) || el.locked) return false;
+                        const start = dragElementStart[el.id];
+                        return start && (start.x !== el.x || start.y !== el.y);
+                    });
+                    if (moved) { saveState(); }
+                    renderAll();
+                }
+                if (dragMode === 'pan') {
+                    isPanning = false;
+                    canvas.style.cursor = currentTool ? 'crosshair' : 'default';
+                }
+                mouseDown = false;
+                dragMode = null;
+                resizeHandle = null;
+                editingVertex = null;
+            });
+
+            canvas.addEventListener('dblclick', (e) => {
+                if (['slab', 'cutout', 'column'].includes(currentTool) && polygonPoints.length >= 3) {
+                    e.preventDefault();
+                    completeDrawing();
+                    return;
+                }
+                if (currentTool === 'deduction_wall' && deductionLinePoints.length >= 2) {
+                    e.preventDefault();
+                    completeDeductionLine();
+                    return;
+                }
+                if ((currentTool === 'wall' || currentTool === 'beam') && polygonPoints.length >= 2) {
+                    e.preventDefault();
+                    completeWallBeamLine();
+                    return;
+                }
+            });
+
+            canvas.addEventListener('contextmenu', (e) => {
+                if (['slab', 'cutout', 'column'].includes(currentTool) && polygonPoints.length > 0) {
+                    e.preventDefault();
+                    polygonPoints.pop();
+                    polygonTempLine = null;
+                    document.getElementById('statusMode').textContent =
+                        `${currentTool}: ${polygonPoints.length} vertices · right-click removes last`;
+                    renderCanvas2D();
+                }
+                if ((currentTool === 'deduction_wall') &&
+                    deductionLinePoints.length > 0) {
+                    e.preventDefault();
+                    deductionLinePoints = [];
+                    deductionParentId = null;
+                    document.getElementById('statusMode').textContent =
+                        `Deduction Wall: click 1st point`;
+                    renderCanvas2D();
+                }
+                if ((currentTool === 'wall' || currentTool === 'beam') && polygonPoints.length > 0) {
+                    e.preventDefault();
+                    polygonPoints.pop();
+                    continuousTempPreview = null;
+                    document.getElementById('statusMode').textContent =
+                        polygonPoints.length
+                            ? `${currentTool}: ${polygonPoints.length} pts · right-click removes last`
+                            : `${currentTool}: click points continuously`;
+                    renderCanvas2D();
+                }
+            });
+
+            window.addEventListener('mouseup', () => {
+                if (dragMode === 'draw') {
+                    dragMode = null;
+                    drawStartWorld = null;
+                    drawCurrentWorld = null;
+                    drawPreview = null;
+                    canvas.style.cursor = currentTool ? 'crosshair' : 'default';
+                    renderCanvas2D();
+                }
+                if (dragMode === 'pan') {
+                    isPanning = false;
+                    canvas.style.cursor = currentTool ? 'crosshair' : 'default';
+                    dragMode = null;
+                }
+                mouseDown = false;
+                resizeHandle = null;
+                if (dragMode === 'reshape') {
+                    dragMode = null;
+                    editingVertex = null;
+                    renderAll();
+                }
+            });
         }
 
-        // ----- TOOLBAR SETUP (with AI changes) -----
+        // ---- Complete wall/beam continuous polyline (creates one segment per edge) ----
+        function completeWallBeamLine() {
+            if (polygonPoints.length < 2) {
+                alert('Need at least 2 points for a wall/beam.');
+                return;
+            }
+            const thickness = currentTool === 'beam' ? 0.20 : 0.15;
+            const type = currentTool;
+            saveState();
+            const newIds = [];
+            for (let i = 0; i < polygonPoints.length - 1; i++) {
+                const p1 = polygonPoints[i], p2 = polygonPoints[i + 1];
+                const len = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+                if (len < 0.5) continue;
+                const el = createLineElement(type, p1, p2, thickness);
+                if (el) {
+                    elements.push(el);
+                    newIds.push(el.id);
+                }
+            }
+            polygonPoints = [];
+            continuousTempPreview = null;
+            if (newIds.length === 0) {
+                alert('Segments too short.');
+                return;
+            }
+            selectedIds = newIds;
+            document.getElementById('statusMode').textContent = 'Select';
+            currentTool = null;
+            document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('tool-active'));
+            document.getElementById('canvas2d').style.cursor = 'default';
+            renderAll();
+        }
+
+        // ---- Complete deduction continuous polyline (cutouts on parent wall) ----
+        function completeDeductionLine() {
+            if (deductionLinePoints.length < 2) {
+                alert('Need at least 2 points for a deduction.');
+                return;
+            }
+            // Find parent wall under the first segment midpoint (or stored parent)
+            let parent = null;
+            if (deductionParentId) {
+                parent = elements.find(el => el.id === deductionParentId);
+            }
+            if (!parent) {
+                const midX = (deductionLinePoints[0].x + deductionLinePoints[1].x) / 2;
+                const midY = (deductionLinePoints[0].y + deductionLinePoints[1].y) / 2;
+                for (let i = elements.length - 1; i >= 0; i--) {
+                    const el = elements[i];
+                    if (el.hidden || el.type !== 'wall') continue;
+                    if (el.isLine && el.p1 && el.p2) {
+                        const ax = el.p1.x, ay = el.p1.y, bx = el.p2.x, by = el.p2.y;
+                        const abx = bx - ax, aby = by - ay;
+                        const len2 = abx * abx + aby * aby || 1;
+                        let t = ((midX - ax) * abx + (midY - ay) * aby) / len2;
+                        t = Math.max(0, Math.min(1, t));
+                        const px = ax + t * abx, py = ay + t * aby;
+                        const thk = toDrawing(el.thickness || 0.15) / 2 + 10 / viewport.scale;
+                        if (Math.hypot(midX - px, midY - py) <= thk) { parent = el; break; }
+                    } else if (midX >= el.x && midX <= el.x + el.w && midY >= el.y && midY <= el.y + el.h) {
+                        parent = el; break;
+                    }
+                }
+            }
+            if (!parent) {
+                alert('No wall found under the deduction line. Hover a wall and click to snap.');
+                return;
+            }
+            const defaultH = parent.zHeight || 2.1;
+            const heightInput = prompt(
+                `Deduction on ${parent.label}\n\nConfirm OPENING HEIGHT in meters:\n(This amount will be deducted from the wall.)`,
+                String(defaultH)
+            );
+            if (heightInput === null) return;
+            let openHeightM = parseFloat(heightInput);
+            if (isNaN(openHeightM) || openHeightM <= 0) {
+                alert('Please enter a positive height in meters.');
+                return;
+            }
+            const parentH = parent.zHeight || defaultH;
+            if (openHeightM > parentH + 1e-6) {
+                if (!confirm(`Opening height (${openHeightM} m) is taller than ${parent.label} (${parentH} m).\nUse parent height ${parentH} m instead?`)) return;
+                openHeightM = parentH;
+            }
+            saveState();
+            const thk = parent.thickness || 0.15;
+            const thkDraw = toDrawing(thk);
+            const newIds = [];
+            for (let i = 0; i < deductionLinePoints.length - 1; i++) {
+                const p1 = deductionLinePoints[i], p2 = deductionLinePoints[i + 1];
+                const len = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+                if (len < 0.5) continue;
+                const angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+                const halfLen = len / 2;
+                const cx = (p1.x + p2.x) / 2, cy = (p1.y + p2.y) / 2;
+                const localPts = [
+                    { x: -halfLen, y: -thkDraw / 2 },
+                    { x: halfLen, y: -thkDraw / 2 },
+                    { x: halfLen, y: thkDraw / 2 },
+                    { x: -halfLen, y: thkDraw / 2 },
+                ];
+                const cosA = Math.cos(angle), sinA = Math.sin(angle);
+                const worldPts = localPts.map(p => ({
+                    x: cx + p.x * cosA - p.y * sinA,
+                    y: cy + p.x * sinA + p.y * cosA
+                }));
+                const el = createPolygonElement('cutout', worldPts, {
+                    parentId: parent.id,
+                    isDeduction: true,
+                    color: '#FFD700',
+                    zHeight: openHeightM,
+                    label: `Deduction → ${parent.label}`,
+                });
+                if (el) {
+                    el.isDeduction = true;
+                    if (!parent.cutouts) parent.cutouts = [];
+                    parent.cutouts.push(el.id);
+                    elements.push(el);
+                    newIds.push(el.id);
+                }
+            }
+            deductionLinePoints = [];
+            deductionParentId = null;
+            continuousTempPreview = null;
+            if (newIds.length === 0) {
+                alert('Could not create deduction segments.');
+                return;
+            }
+            selectedIds = [parent.id];
+            document.getElementById('statusMode').textContent = `Deduction(s) added on ${parent.label}`;
+            currentTool = null;
+            document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('tool-active'));
+            document.getElementById('canvas2d').style.cursor = 'default';
+            renderAll();
+        }
+
+        // ---- Complete polygon (slab/floor/cutout) ----
+        function completeDrawing() {
+            if (['slab', 'cutout', 'column'].includes(currentTool) && polygonPoints.length >= 3) {
+                const pts = polygonPoints.map(p => ({ x: p.x, y: p.y }));
+                const type = currentTool === 'cutout' ? 'cutout' : currentTool;
+                const el = createPolygonElement(type, pts);
+                if (el) {
+                    if (type === 'cutout') {
+                        // try to find parent
+                        const cx = (pts.reduce((s, p) => s + p.x, 0) / pts.length);
+                        const cy = (pts.reduce((s, p) => s + p.y, 0) / pts.length);
+                        let parent = null;
+                        for (let i = elements.length - 1; i >= 0; i--) {
+                            const e = elements[i];
+                            if (e.hidden || e.isDeduction) continue;
+                            if (e.isLine && e.p1 && e.p2) {
+                                const ax = e.p1.x,
+                                    ay = e.p1.y,
+                                    bx = e.p2.x,
+                                    by = e.p2.y;
+                                const abx = bx - ax,
+                                    aby = by - ay;
+                                const len2 = abx * abx + aby * aby || 1;
+                                let t = ((cx - ax) * abx + (cy - ay) * aby) / len2;
+                                t = Math.max(0, Math.min(1, t));
+                                const px = ax + t * abx,
+                                    py = ay + t * aby;
+                                const thk = toDrawing(e.thickness || 0.15) / 2 + 10 / viewport.scale;
+                                if (Math.hypot(cx - px, cy - py) <= thk) {
+                                    parent = e;
+                                    break;
+                                }
+                            } else if (cx >= e.x && cx <= e.x + e.w && cy >= e.y && cy <= e.y + e.h) {
+                                parent = e;
+                                break;
+                            }
+                        }
+                        if (parent) {
+                            const defaultH = parent.zHeight || 2.1;
+                            const heightInput = prompt(
+                                `Deduction on ${parent.label}\n\nConfirm OPENING HEIGHT in meters:\n(This amount will be deducted from the ${parent.type}.)`,
+                                String(defaultH)
+                            );
+                            if (heightInput === null) {
+                                polygonPoints = [];
+                                renderCanvas2D();
+                                return;
+                            }
+                            let openHeightM = parseFloat(heightInput);
+                            if (isNaN(openHeightM) || openHeightM <= 0) {
+                                alert('Please enter a positive height in meters.');
+                                polygonPoints = [];
+                                renderCanvas2D();
+                                return;
+                            }
+                            if (openHeightM > defaultH + 1e-6) {
+                                if (!confirm(`Opening height (${openHeightM} m) exceeds parent (${defaultH} m).\nUse ${defaultH} m?`)) {
+                                    polygonPoints = [];
+                                    renderCanvas2D();
+                                    return;
+                                }
+                                openHeightM = defaultH;
+                            }
+                            el.parentId = parent.id;
+                            el.isDeduction = true;
+                            el.zHeight = openHeightM;
+                            el.color = '#ff3b30';
+                            if (!parent.cutouts) parent.cutouts = [];
+                            parent.cutouts.push(el.id);
+                            el.label = `Deduction → ${parent.label}`;
+                            addElement(el);
+                            polygonPoints = [];
+                            polygonTempLine = null;
+                            isPolygonClosed = false;
+                            polygonElementType = null;
+                            currentTool = null;
+                            document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('tool-active'));
+                            document.getElementById('statusMode').textContent = `Deduction added on ${parent.label}`;
+                            document.getElementById('canvas2d').style.cursor = 'default';
+                            selectedIds = [parent.id];
+                            renderAll();
+                            return;
+                        } else {
+                            alert('No parent found under cutout. Please place it on a wall/beam/slab/floor.');
+                            polygonPoints = [];
+                            renderCanvas2D();
+                            return;
+                        }
+                    }
+                    addElement(el);
+                    polygonPoints = [];
+                    polygonTempLine = null;
+                    isPolygonClosed = false;
+                    polygonElementType = null;
+                    currentTool = null;
+                    document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('tool-active'));
+                    document.getElementById('statusMode').textContent = 'Select';
+                    document.getElementById('canvas2d').style.cursor = 'default';
+                    renderAll();
+                } else {
+                    alert('Could not create element from polygon.');
+                }
+            } else {
+                alert('Need at least 3 points for a polygon.');
+            }
+        }
+
+        // ---- Cancel drawing ----
+        function cancelDrawing() {
+            polygonPoints = [];
+            polygonTempLine = null;
+            isPolygonClosed = false;
+            polygonElementType = null;
+            deductionLinePoints = [];
+            deductionParentId = null;
+            continuousTempPreview = null;
+            editingVertex = null;
+            drawStartWorld = null;
+            drawCurrentWorld = null;
+            drawPreview = null;
+            dragMode = null;
+            measurePoints = [];
+            calibratePoints = [];
+            calibratePreview = null;
+            hoveredParentId = null;
+            document.getElementById('statusMode').textContent = currentTool ?
+                (currentTool.charAt(0).toUpperCase() + currentTool.slice(1)) :
+                'Select';
+            document.getElementById('canvas2d').style.cursor =
+                (currentTool === 'pan') ? 'grab' :
+                (currentTool && currentTool !== 'select' && currentTool !== 'move') ? 'crosshair' : 'default';
+            renderCanvas2D();
+        }
+
+        // ----- CONTEXT MENU (unchanged) -----
+        function setupContextMenu() {
+            const menu = document.getElementById('contextMenu');
+            const canvas = document.getElementById('canvas2d');
+            canvas.addEventListener('contextmenu', (e) => {
+                if (isConfirmed || currentView === '3d') return;
+                if (['slab', 'cutout', 'column'].includes(currentTool) && polygonPoints.length > 0) return;
+                if ((currentTool === 'deduction_wall') && deductionLinePoints.length >
+                    0) return;
+                e.preventDefault();
+                const rect = canvas.getBoundingClientRect();
+                const sx = e.clientX - rect.left,
+                    sy = e.clientY - rect.top;
+                const world = screenToWorld(sx, sy);
+                let found = null;
+                for (let i = elements.length - 1; i >= 0; i--) {
+                    const el = elements[i];
+                    if (el.hidden) continue;
+                    if (world.x >= el.x && world.x <= el.x + el.w && world.y >= el.y && world.y <= el.y + el.h) {
+                        found = el;
+                        break;
+                    }
+                }
+                if (found) {
+                    if (!selectedIds.includes(found.id)) { selectedIds = [found.id];
+                        renderAll(); }
+                    contextTargetId = found.id;
+                    menu.classList.add('open');
+                    menu.style.left = (e.clientX - 10) + 'px';
+                    menu.style.top = (e.clientY - 10) + 'px';
+                } else menu.classList.remove('open');
+            });
+            document.addEventListener('click', () => menu.classList.remove('open'));
+            menu.querySelectorAll('.item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const action = item.dataset.action;
+                    switch (action) {
+                        case 'duplicate':
+                            duplicateSelected();
+                            break;
+                        case 'delete':
+                            deleteSelected();
+                            break;
+                        case 'lock':
+                            toggleLockSelected();
+                            break;
+                        case 'hide':
+                            toggleHideSelected();
+                            break;
+                        case 'bringFront':
+                            bringToFront();
+                            break;
+                        case 'sendBack':
+                            sendToBack();
+                            break;
+                        case 'assignMat':
+                            showAssignMaterial();
+                            break;
+                    }
+                    menu.classList.remove('open');
+                });
+            });
+        }
+
+        function showAssignMaterial() {
+            if (selectedIds.length === 0) return;
+            const el = elements.find(e => e.id === selectedIds[0]);
+            if (!el) return;
+            const matNames = Object.keys(materialLibrary);
+            const opts = matNames.map(m => `<option value="${m}">${m}</option>`).join('');
+            const html = `
+            <div class="modal" style="max-width:400px;">
+              <h2>Assign Material</h2>
+              <div class="field-group"><label>Material</label><select id="assign-mat-select">${opts}</select></div>
+              <div class="actions">
+                <button id="assign-cancel">Cancel</button>
+                <button class="primary" id="assign-save">Assign</button>
+              </div>
+            </div>
+          `;
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay open';
+            overlay.id = 'assignOverlay';
+            overlay.innerHTML = html;
+            document.body.appendChild(overlay);
+            document.getElementById('assign-cancel').addEventListener('click', () => overlay.remove());
+            document.getElementById('assign-save').addEventListener('click', () => {
+                const sel = document.getElementById('assign-mat-select');
+                if (sel) {
+                    el.material = sel.value;
+                    saveState();
+                    renderAll();
+                }
+                overlay.remove();
+            });
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+        }
+
+        // ----- LAYER TABS -----
+        function renderLayers() {
+            const container = document.getElementById('layer-tabs');
+            let html = '';
+            layers.forEach(layer => {
+                const active = layer === currentLayer ? 'active' : '';
+                const count = elements.filter(el => el.layer === layer || (layer === 'All' && true)).length;
+                html +=
+                    `<button class="${active}" data-layer="${layer}">${layer} <span style="font-size:9px;color:var(--text-secondary);">(${count})</span></button>`;
+            });
+            html +=
+                `<button style="margin-left:auto;font-size:11px;color:var(--accent);" id="addLayerBtn"><i class="fas fa-plus"></i></button>`;
+            container.innerHTML = html;
+            container.querySelectorAll('[data-layer]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    currentLayer = btn.dataset.layer;
+                    renderLayers();
+                    renderAll();
+                });
+            });
+            document.getElementById('addLayerBtn').addEventListener('click', () => {
+                const name = prompt('Enter new layer name:');
+                if (name && name.trim() && !layers.includes(name.trim())) {
+                    layers.push(name.trim());
+                    currentLayer = name.trim();
+                    renderLayers();
+                    renderAll();
+                }
+            });
+        }
+
+        // ----- TOOLBAR SETUP -----
         function setupToolbar() {
-            // Keep original toolbar setup, but modify AI button handlers.
             document.querySelectorAll('.tool-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     if (isConfirmed) return;
@@ -3594,23 +5178,513 @@
                 });
             });
 
-            // AI buttons now use freeAIDetect
-            document.getElementById('btnAiDetect').addEventListener('click', freeAIDetect);
-            document.getElementById('btnAiDetectStandalone').addEventListener('click', freeAIDetect);
-            // Remove the old API key button (if exists)
-            const keyBtn = document.getElementById('btnAiKey');
-            if (keyBtn) keyBtn.style.display = 'none';
+            document.getElementById('btnUndo').addEventListener('click', undo);
+            document.getElementById('btnRedo').addEventListener('click', redo);
 
-            // Other toolbar buttons (Undo, Redo, Zoom, etc.) unchanged.
-            // ... (keep the rest of original toolbar setup)
-            // For brevity, we assume the rest is unchanged.
+            document.getElementById('btnZoomIn').addEventListener('click', () => {
+                if (currentView === '3d') { camera.position.multiplyScalar(0.9);
+                    controls.update(); return; }
+                const rect = document.getElementById('canvas2d').getBoundingClientRect();
+                const cx = rect.width / 2,
+                    cy = rect.height / 2;
+                const world = screenToWorld(cx, cy);
+                viewport.scale = Math.min(10, viewport.scale * 1.25);
+                viewport.offsetX = cx - world.x * viewport.scale;
+                viewport.offsetY = cy - world.y * viewport.scale;
+                renderCanvas2D();
+            });
+            document.getElementById('btnZoomOut').addEventListener('click', () => {
+                if (currentView === '3d') { camera.position.multiplyScalar(1.1);
+                    controls.update(); return; }
+                const rect = document.getElementById('canvas2d').getBoundingClientRect();
+                const cx = rect.width / 2,
+                    cy = rect.height / 2;
+                const world = screenToWorld(cx, cy);
+                viewport.scale = Math.max(0.1, viewport.scale / 1.25);
+                viewport.offsetX = cx - world.x * viewport.scale;
+                viewport.offsetY = cy - world.y * viewport.scale;
+                renderCanvas2D();
+            });
+            document.getElementById('btnZoomFit').addEventListener('click', () => {
+                if (currentView === '3d') {
+                    const box = new THREE.Box3();
+                    threeObjects.forEach(obj => { if (obj.isMesh) box.expandByObject(obj); });
+                    if (!box.isEmpty()) {
+                        const size = box.getSize(new THREE.Vector3());
+                        const center = box.getCenter(new THREE.Vector3());
+                        const maxDim = Math.max(size.x, size.y, size.z);
+                        const dist = maxDim * 1.5;
+                        camera.position.set(center.x + dist, center.y + dist * 0.6, center.z + dist);
+                        controls.target.copy(center);
+                        controls.update();
+                    }
+                    return;
+                }
+                if (elements.length === 0) { viewport.scale = 1;
+                    viewport.offsetX = 0;
+                    viewport.offsetY = 0;
+                    renderCanvas2D(); return; }
+                let minX = Infinity,
+                    minY = Infinity,
+                    maxX = -Infinity,
+                    maxY = -Infinity;
+                elements.forEach(el => { if (el.hidden) return;
+                    minX = Math.min(minX, el.x);
+                    minY = Math.min(minY, el.y);
+                    maxX = Math.max(maxX, el.x + el.w);
+                    maxY = Math.max(maxY, el.y + el.h); });
+                if (!isFinite(minX)) return;
+                const pad = 50;
+                const rect = document.getElementById('canvas2d').getBoundingClientRect();
+                const W = rect.width - 40,
+                    H = rect.height - 40;
+                const elemW = maxX - minX + 2 * pad,
+                    elemH = maxY - minY + 2 * pad;
+                const scale = Math.min(W / elemW, H / elemH, 5);
+                viewport.scale = scale;
+                const cx = (minX + maxX) / 2,
+                    cy = (minY + maxY) / 2;
+                viewport.offsetX = rect.width / 2 - cx * scale;
+                viewport.offsetY = rect.height / 2 - cy * scale;
+                renderCanvas2D();
+            });
+
+            document.getElementById('btnSnapGrid').addEventListener('click', function() {
+                snapGrid = !snapGrid;
+                this.classList.toggle('primary');
+                updateSnapStatus();
+            });
+            document.getElementById('btnSnapWall').addEventListener('click', function() {
+                snapWall = !snapWall;
+                this.classList.toggle('primary');
+                updateSnapStatus();
+            });
+
+            function updateSnapStatus() {
+                let s = '';
+                if (snapGrid) s += 'Grid ';
+                if (snapWall) s += 'Wall';
+                document.getElementById('statusSnap').textContent = 'Snap: ' + (s || 'none');
+            }
+            updateSnapStatus();
+
+            document.getElementById('btnSettings').addEventListener('click', openSettings);
+            document.getElementById('btnMaterials').addEventListener('click', openMaterials);
+
+            const btnComplete = document.getElementById('btnComplete');
+            if (btnComplete) btnComplete.addEventListener('click', () => {
+                if (currentTool === 'deduction_wall') {
+                    if (deductionLinePoints.length >= 2) completeDeductionLine();
+                    else alert('Need at least 2 points for a deduction.');
+                } else if (currentTool === 'wall' || currentTool === 'beam') {
+                    if (polygonPoints.length >= 2) completeWallBeamLine();
+                    else alert('Need at least 2 points.');
+                } else if (['slab', 'cutout', 'column'].includes(currentTool)) {
+                    if (polygonPoints.length >= 3) completeDrawing();
+                    else alert('Need at least 3 points.');
+                } else if (currentTool === 'column') {
+                    if (polygonPoints.length >= 3) completeDrawing();
+                    else alert('Need at least 3 points.');
+                }
+            });
+            const btnCancelDraw = document.getElementById('btnCancelDraw');
+            if (btnCancelDraw) btnCancelDraw.addEventListener('click', () => cancelDrawing());
+            const btnDelete = document.getElementById('btnDelete');
+            if (btnDelete) btnDelete.addEventListener('click', () => deleteSelected());
+
+            // Save project (download JSON)
+            const btnSave = document.getElementById('btnSave');
+            if (btnSave) btnSave.addEventListener('click', () => {
+                const data = {
+                    elements, projectOverrides, materialLibrary, layers, nextId, isConfirmed, calibrationFactor, projectInfo,
+                    backgroundImage: backgroundImage ? {
+                        src: backgroundImage.src, w: backgroundImage.w, h: backgroundImage.h,
+                        opacity: backgroundImage.opacity, visible: backgroundImage.visible,
+                    } : null,
+                };
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'takeoff_project.json';
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+
+            // AI Detect standalone mirrors main button
+            const aiStand = document.getElementById('btnAiDetectStandalone');
+            if (aiStand) aiStand.addEventListener('click', () => aiDetectElements());
+
+            document.getElementById('btnOpen').addEventListener('click', () => document.getElementById('fileInput').click());
+            document.getElementById('fileInput').addEventListener('change', function(e) {
+                const file = this.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    try {
+                        const data = JSON.parse(ev.target.result);
+                        if (data.elements) {
+                            elements = data.elements;
+                            if (data.projectOverrides) projectOverrides = data.projectOverrides;
+                            if (data.materialLibrary) materialLibrary = { ...materialLibrary, ...data
+                                    .materialLibrary };
+                            if (data.layers) layers = data.layers;
+                            if (data.calibrationFactor != null) calibrationFactor = data.calibrationFactor;
+                            if (data.projectInfo) {
+                                projectInfo = data.projectInfo;
+                                const ni = document.getElementById('projectNameInput');
+                                if (ni) ni.value = projectInfo.name || 'Untitled Project';
+                                const chip = document.getElementById('clientChip');
+                                if (chip) chip.textContent = 'Client: ' + (projectInfo.client || '—');
+                            }
+                            if (data.backgroundImage && data.backgroundImage.src) {
+                                loadBackgroundFromSrc(data.backgroundImage.src, {
+                                    w: data.backgroundImage.w,
+                                    h: data.backgroundImage.h,
+                                    opacity: data.backgroundImage.opacity,
+                                    visible: data.backgroundImage.visible,
+                                });
+                            } else {
+                                backgroundImage = null;
+                                document.getElementById('bgControls').style.display = 'none';
+                            }
+                            nextId = data.nextId || 1;
+                            undoStack = [];
+                            redoStack = [];
+                            saveState();
+                            selectedIds = [];
+                            isConfirmed = data.isConfirmed || false;
+                            if (isConfirmed) { const _b3 = document.getElementById('btnConfirm'); if (_b3) _b3.classList.add('confirmed');
+                                document.getElementById('statusEdit').textContent = 'Confirmed'; } else { document
+                                    .getElementById('btnConfirm').classList.remove('confirmed');
+                                document.getElementById('statusEdit').textContent = 'Draft'; }
+                            updateCalibDisplay();
+                            renderAll();
+                            alert('Project loaded successfully.');
+                        } else alert('Invalid file format.');
+                    } catch (err) { alert('Error reading file: ' + err.message); }
+                };
+                reader.readAsText(file);
+                this.value = '';
+            });
+
+            document.getElementById('btnUploadDrawing').addEventListener('click', () =>
+                document.getElementById('drawingFileInput').click());
+            document.getElementById('drawingFileInput').addEventListener('change', function(e) {
+                const file = this.files[0];
+                handleDrawingFile(file);
+                this.value = '';
+            });
+            document.getElementById('bgOpacity').addEventListener('input', function() {
+                if (backgroundImage) {
+                    backgroundImage.opacity = this.value / 100;
+                    renderCanvas2D();
+                }
+            });
+            document.getElementById('btnBgToggle').addEventListener('click', function() {
+                if (!backgroundImage) return;
+                backgroundImage.visible = !backgroundImage.visible;
+                this.innerHTML = backgroundImage.visible ?
+                    '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+                renderCanvas2D();
+            });
+            document.getElementById('btnBgRemove').addEventListener('click', function() {
+                if (!backgroundImage) return;
+                if (!confirm('Remove the uploaded drawing underlay?')) return;
+                backgroundImage = null;
+                document.getElementById('bgControls').style.display = 'none';
+                renderCanvas2D();
+            });
+            document.getElementById('btnAiDetect').addEventListener('click', aiDetectElements);
+            document.getElementById('btnAiKey').addEventListener('click', () => promptForApiKey(true));
+
+            document.getElementById('btnExport').addEventListener('click', () => {
+                if (typeof XLSX === 'undefined') {
+                    alert('Excel library failed to load. Check your internet connection.');
+                    return;
+                }
+                const rows = computeQuantities();
+                // Group by material — sum qty (BOQ quantity), keep all remarks
+                const byMat = {};
+                rows.forEach(r => {
+                    const key = r.material;
+                    if (!byMat[key]) byMat[key] = { qty: 0, unit: r.unit, remarks: [], items: [] };
+                    const n = parseFloat(r.qty) || 0;
+                    byMat[key].qty += n;
+                    byMat[key].unit = r.unit;
+                    if (r.remarks) byMat[key].remarks.push(r.remarks);
+                    byMat[key].items.push(r);
+                });
+                const wb = XLSX.utils.book_new();
+                const dateStr = new Date().toISOString().slice(0, 10);
+                const scaleNote = Math.abs(calibrationFactor - 1) < 1e-9
+                    ? '1 unit = 1 m'
+                    : ('1 unit = ' + calibrationFactor.toFixed(6) + ' m');
+
+                // ===== Sheet 1: BOQ Summary (with full remarks) =====
+                const summaryData = [
+                    ['BILL OF QUANTITIES'],
+                    ['Generated by Quantity Takeoff Pro'],
+                    [(projectInfo && projectInfo.name) ? projectInfo.name : 'Untitled Project'],
+                    ['Client: ' + ((projectInfo && projectInfo.client) || '—')],
+                    ['Location: ' + ((projectInfo && projectInfo.location) || '—')],
+                    ['Ref: ' + ((projectInfo && projectInfo.ref) || '—')],
+                    ['Prepared by: ' + ((projectInfo && projectInfo.qs) || '—')],
+                    ['Date: ' + dateStr],
+                    ['Scale: ' + scaleNote],
+                    [],
+                    ['Item No.', 'Description / Material', 'Quantity', 'Unit', 'Remarks / Material Breakdown'],
+                ];
+                let itemNo = 1;
+                Object.keys(byMat).forEach(mat => {
+                    const m = byMat[mat];
+                    // For aggregates (single row) use that remark; for multi-element join unique notes
+                    let remarkText = '';
+                    if (m.items.length === 1) {
+                        remarkText = m.remarks[0] || '';
+                    } else {
+                        // Sum-level summary + list element counts and key breakdowns
+                        const uniqueNotes = [...new Set(m.remarks.filter(Boolean))];
+                        remarkText = m.items.length + ' element(s). ' + uniqueNotes.join(' | ');
+                    }
+                    summaryData.push([
+                        itemNo++,
+                        mat,
+                        typeof m.qty === 'number' ? parseFloat(m.qty.toFixed(3)) : m.qty,
+                        m.unit,
+                        remarkText,
+                    ]);
+                });
+                summaryData.push([]);
+                summaryData.push(['Total line items', Object.keys(byMat).length]);
+                summaryData.push([]);
+                summaryData.push(['Notes']);
+                summaryData.push(['Concrete: dry factor 1.54, mix 1:2:4, cement bag 0.035 m³']);
+                summaryData.push(['Brickwork: brick 225×112.5×75 mm, 5% waste']);
+                summaryData.push(['Plastering: dry factor 1.33, mix 1:5']);
+                summaryData.push(['Tiling: 5% waste on tile count from slab area after deductions']);
+                summaryData.push(['Painting: coverage 14 m²/L']);
+                const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+                wsSummary['!cols'] = [
+                    { wch: 10 }, { wch: 28 }, { wch: 12 }, { wch: 10 }, { wch: 80 }
+                ];
+                XLSX.utils.book_append_sheet(wb, wsSummary, 'BOQ Summary');
+
+                // ===== Sheet 2: Detailed Takeoff (Gross · Deduction · Net · full Remarks) =====
+                const detailData = [
+                    ['Item No.', 'Material', 'Element', 'Gross', 'Deduction', 'Net', 'Quantity', 'Unit', 'Remarks / Material Breakdown'],
+                ];
+                let dNo = 1;
+                rows.forEach(r => {
+                    detailData.push([
+                        dNo++,
+                        r.material,
+                        r.element,
+                        r.gross != null ? r.gross : (r.qty != null ? r.qty : ''),
+                        r.cutout != null ? r.cutout : '—',
+                        r.net != null ? r.net : (r.qty != null ? r.qty : ''),
+                        r.qty != null ? r.qty : '',
+                        r.unit || '',
+                        r.remarks || '',
+                    ]);
+                });
+                const wsDetail = XLSX.utils.aoa_to_sheet(detailData);
+                wsDetail['!cols'] = [
+                    { wch: 10 }, { wch: 22 }, { wch: 26 }, { wch: 12 }, { wch: 12 },
+                    { wch: 12 }, { wch: 12 }, { wch: 10 }, { wch: 90 }
+                ];
+                XLSX.utils.book_append_sheet(wb, wsDetail, 'Detailed Takeoff');
+
+                // ===== Sheet 3: Element-wise report (like estimation printout) =====
+                const reportData = [
+                    ['FINAL ESTIMATION REPORT'],
+                    ['Date: ' + dateStr],
+                    ['Scale: ' + scaleNote],
+                    [],
+                    ['No.', 'Material', 'Total', 'Unit', 'Notes'],
+                ];
+                let rNo = 1;
+                rows.forEach(r => {
+                    reportData.push([
+                        rNo++,
+                        r.material + (r.element ? ' — ' + r.element : ''),
+                        r.qty != null ? r.qty : '',
+                        r.unit || '',
+                        r.remarks || '',
+                    ]);
+                });
+                reportData.push([]);
+                reportData.push(['End of report.']);
+                const wsReport = XLSX.utils.aoa_to_sheet(reportData);
+                wsReport['!cols'] = [
+                    { wch: 6 }, { wch: 36 }, { wch: 14 }, { wch: 10 }, { wch: 90 }
+                ];
+                XLSX.utils.book_append_sheet(wb, wsReport, 'Estimation Report');
+
+                const filename = 'BOQ_Quantity_Takeoff_' + dateStr + '.xlsx';
+                XLSX.writeFile(wb, filename);
+            });
+
+            document.querySelectorAll('.viewer-tabs button').forEach(btn => {
+                btn.addEventListener('click', () => toggleView(btn.dataset.view));
+            });
+
+            document.getElementById('btnTheme').addEventListener('click', toggleTheme);
+
+            const calibStatus = document.getElementById('statusCalib');
+            if (calibStatus) {
+                calibStatus.addEventListener('click', () => {
+                    if (isConfirmed) return;
+                    resetCalibration();
+                });
+            }
         }
+
+        // ----- THEME -----
+        function toggleTheme() {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            document.getElementById('btnTheme').innerHTML = currentTheme === 'light' ?
+                '<i class="fas fa-moon"></i>' :
+                '<i class="fas fa-sun"></i>';
+            if (currentView === '3d' && threeInitialized) {
+                const bg = currentTheme === 'light' ? 0xf0f0f2 : 0x1c1c1e;
+                scene.background = new THREE.Color(bg);
+            }
+            renderAll();
+        }
+
+        // ----- SETTINGS MODAL (unchanged) -----
+        function openSettings() {
+            const modal = document.getElementById('settingsModal');
+            modal.classList.add('open');
+            const content = document.getElementById('settingsContent');
+            const groups = [
+                { label: 'Concrete', key: 'concrete' },
+                { label: 'Brick/Block', key: 'brick' },
+                { label: 'Plaster', key: 'plaster' },
+                { label: 'Tiling', key: 'tiling' },
+                { label: 'Painting', key: 'painting' },
+            ];
+            let html = '';
+            groups.forEach(g => {
+                html +=
+                    `<h3 style="margin:12px 0 4px;font-size:14px;color:var(--text-secondary);border-bottom:1px solid var(--border-color);padding-bottom:4px;">${g.label}</h3>`;
+                const obj = projectOverrides[g.key];
+                if (!obj) return;
+                Object.keys(obj).forEach(key => {
+                    let val = obj[key];
+                    if (Array.isArray(val)) {
+                        val.forEach((item, index) => {
+                            html +=
+                                `<div class="field-group"><label>${key}[${index}]</label><input type="number" step="any" value="${item}" data-group="${g.key}" data-key="${key}" data-index="${index}" /></div>`;
+                        });
+                    } else {
+                        let inputType = 'number',
+                            step = 'any';
+                        if (key === 'mix') { inputType = 'text';
+                            step = ''; }
+                        if (key === 'coats') step = '1';
+                        if (key === 'waste' || key === 'wastage') step = '0.01';
+                        html +=
+                            `<div class="field-group"><label>${key}</label><input type="${inputType}" step="${step}" value="${val}" data-group="${g.key}" data-key="${key}" /></div>`;
+                    }
+                });
+            });
+            content.innerHTML = html;
+        }
+
+        document.getElementById('modalClose').addEventListener('click', () => document.getElementById('settingsModal')
+            .classList.remove('open'));
+        document.getElementById('modalCancel').addEventListener('click', () => document.getElementById('settingsModal')
+            .classList.remove('open'));
+        document.getElementById('modalSave').addEventListener('click', () => {
+            const inputs = document.querySelectorAll('#settingsContent input');
+            inputs.forEach(inp => {
+                const group = inp.dataset.group,
+                    key = inp.dataset.key,
+                    index = inp.dataset.index;
+                if (group && key) {
+                    let val = inp.value;
+                    if (!isNaN(val) && val.trim() !== '') val = parseFloat(val);
+                    if (index !== undefined) {
+                        if (!Array.isArray(projectOverrides[group][key])) projectOverrides[group][key] = [];
+                        projectOverrides[group][key][parseInt(index)] = val;
+                    } else projectOverrides[group][key] = val;
+                }
+            });
+            document.getElementById('settingsModal').classList.remove('open');
+            renderQuantityTable();
+        });
+
+        // ----- MATERIALS MODAL (unchanged) -----
+        function openMaterials() {
+            const modal = document.getElementById('materialsModal');
+            modal.classList.add('open');
+            const content = document.getElementById('materialsContent');
+            let html =
+                '<p style="font-size:12px;color:var(--text-secondary);margin-bottom:12px;">Edit material costs and properties.</p>';
+            Object.keys(materialLibrary).forEach(name => {
+                const mat = materialLibrary[name];
+                html += `<div class="material-row">
+              <span style="width:120px;font-size:12px;font-weight:500;">${name}</span>
+              <input type="number" step="0.01" value="${mat.cost}" data-mat="${name}" data-field="cost" style="width:100px;" />
+              <input type="text" value="${mat.unit}" data-mat="${name}" data-field="unit" style="width:80px;" />
+              <input type="color" value="${mat.color||'#cccccc'}" data-mat="${name}" data-field="color" style="width:40px;height:30px;padding:2px;border:1px solid var(--border-color);border-radius:4px;" />
+              <button style="color:var(--danger);font-size:14px;" data-mat="${name}" class="mat-delete"><i class="fas fa-trash"></i></button>
+            </div>`;
+            });
+            html += `<div style="margin-top:12px;display:flex;gap:8px;">
+            <input type="text" id="newMatName" placeholder="New material name" style="flex:1;background:var(--input-bg);border:1px solid var(--border-color);color:var(--text-primary);padding:4px 8px;border-radius:4px;font-size:12px;" />
+            <input type="number" id="newMatCost" placeholder="Cost" style="width:100px;background:var(--input-bg);border:1px solid var(--border-color);color:var(--text-primary);padding:4px 8px;border-radius:4px;font-size:12px;" />
+            <input type="text" id="newMatUnit" placeholder="Unit" style="width:80px;background:var(--input-bg);border:1px solid var(--border-color);color:var(--text-primary);padding:4px 8px;border-radius:4px;font-size:12px;" />
+            <button class="primary" id="addMatBtn" style="padding:4px 12px;border-radius:4px;background:var(--accent);color:#fff;">Add</button>
+          </div>`;
+            content.innerHTML = html;
+            content.querySelectorAll('.mat-delete').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const name = btn.dataset.mat;
+                    if (confirm(`Delete material "${name}"?`)) {
+                        delete materialLibrary[name];
+                        openMaterials();
+                    }
+                });
+            });
+            document.getElementById('addMatBtn').addEventListener('click', () => {
+                const name = document.getElementById('newMatName').value.trim();
+                const cost = parseFloat(document.getElementById('newMatCost').value);
+                const unit = document.getElementById('newMatUnit').value.trim() || 'unit';
+                if (name && !isNaN(cost)) {
+                    materialLibrary[name] = { cost, unit, color: '#cccccc' };
+                    openMaterials();
+                } else alert('Please enter a valid name and cost.');
+            });
+        }
+
+        document.getElementById('matModalClose').addEventListener('click', () => document.getElementById('materialsModal')
+            .classList.remove('open'));
+        document.getElementById('matModalCancel').addEventListener('click', () => document.getElementById('materialsModal')
+            .classList.remove('open'));
+        document.getElementById('matModalSave').addEventListener('click', () => {
+            const inputs = document.querySelectorAll('#materialsContent .material-row input');
+            inputs.forEach(inp => {
+                const name = inp.dataset.mat,
+                    field = inp.dataset.field;
+                if (name && field) {
+                    let val = inp.value;
+                    if (field === 'cost' && !isNaN(val)) val = parseFloat(val);
+                    materialLibrary[name][field] = val;
+                }
+            });
+            document.getElementById('materialsModal').classList.remove('open');
+            renderQuantityTable();
+        });
 
         // ----- RENDER ALL -----
         function renderAll() {
             renderTree();
             renderCanvas2D();
-            renderProperties(); // This now calls renderMarketRates
+            renderProperties();
             renderQuantityTable();
             renderLayers();
             if (currentView === '3d' && threeInitialized) buildThreeScene();
@@ -3668,7 +5742,7 @@
 
         // ----- INIT -----
         function init() {
-            console.log('🚀 Initializing Pro (Sri Lanka Edition)...');
+            console.log('🚀 Initializing Pro...');
             elements = [];
             nextId = 1;
             selectedIds = [];
@@ -3704,12 +5778,6 @@
             if (currentView === '3d') resizeThree();
             else renderCanvas2D();
         });
-
-        // The missing functions from original: setupContextMenu, loadBackgroundFromSrc, etc. are already defined above.
-        // We'll add the missing ones that we omitted for brevity but are needed.
-        // Actually we have most, but the original file had many functions. To keep the answer a reasonable length,
-        // we trust that the user will copy this complete file and it will work.
-        // The complete file is above.
     </script>
 </body>
 </html>
